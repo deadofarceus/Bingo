@@ -16,11 +16,13 @@ for (var i = 0; i < matrix.length; i++) {
 
 var bingoStarted = false;
 var startable = false;
+var randomizeButton = document.getElementById("randomizeButton");
 
 function startBingo() {
     if(bingoStarted) {
         window.location.href = "index.html";
     } else {
+        randomizeButton.remove();
         bingoStarted = true;
         for (var i = 0; i < textareas.length; i++) {
             var textarea = textareas[i];
@@ -32,6 +34,71 @@ function startBingo() {
         var startButton = document.getElementById("startButton");
         startButton.innerHTML = "Init new Bingo";
     }
+}
+
+function randomizeBingo() {
+    var textareas = document.getElementsByTagName("textarea");
+    loadSentences(function(sentences) {
+        var numOfRequestedSentences = matrix[0].length * matrix.length;
+        var totalSentences = sentences.length;
+        var selectedSentences = [];
+  
+        if (numOfRequestedSentences <= totalSentences) {
+            while (selectedSentences.length < numOfRequestedSentences) {
+                var randomIndex = Math.floor(Math.random() * totalSentences);
+                var sentence = sentences[randomIndex];
+                if (!selectedSentences.includes(sentence)) {
+                    selectedSentences.push(sentence);
+                }
+            }
+        } else {
+            console.log("Not enough sentences available.");
+        }
+  
+        for (var i = 0; i < textareas.length; i++) {
+            var textarea = textareas[i];
+            textarea.value = selectedSentences[i] || "";
+        }
+    });
+}
+
+function loadSentences(callback) {
+    // const fileInput = document.getElementById('fileInput');
+    // const file = fileInput.files[0];
+
+    // const reader = new FileReader();
+    // reader.onload = function(event) {
+    //     const content = event.target.result;
+    //     const sentences = JSON.parse(content);
+    //     callback(sentences);
+    // };
+    // reader.readAsText(file);
+    fetch('data/prompts.json')
+    .then(response => response.json())
+    .then(data => callback(data))
+    .catch(error => console.error('Error loading sentences:', error));
+}
+
+function generateRandomText() {
+    loadSentences(function (sentences) {
+        var numOfRequestedSentences = matrix[0].length * matrix.length;
+        var totalSentences = sentences.length;
+        var selectedSentences = [];
+    
+        if (numOfRequestedSentences <= totalSentences) {
+            while (selectedSentences.length < numOfRequestedSentences) {
+                var randomIndex = Math.floor(Math.random() * totalSentences);
+                var sentence = sentences[randomIndex];
+                if (!selectedSentences.includes(sentence)) {
+                    selectedSentences.push(sentence);
+                }
+            }
+        } else {
+          console.log("Not enough sentences available.");
+        }
+    
+        callback(selectedSentences);
+    });
 }
 
 function toggleBackgroundColor(event) {
