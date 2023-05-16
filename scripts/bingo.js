@@ -152,20 +152,27 @@ var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const id = params.get('id');
 
-const socket = new WebSocket(`wss://crystal-reliable-slipper.glitch.me?id=${id}`);
+var socket = new WebSocket(`wss://crystal-reliable-slipper.glitch.me?id=${id}`);
 
-// Event-Handler für Verbindungsereignisse
-socket.onopen = function() {
-    console.log('WebSocket-Verbindung hergestellt.');
-};
+function connectWebSocket() {
+    socket = new WebSocket(`wss://crystal-reliable-slipper.glitch.me?id=${id}`);
+  
+    socket.onopen = function() {
+      console.log('WebSocket-Verbindung hergestellt.');
+    };
+  
+    socket.onclose = function() {
+      console.log('WebSocket-Verbindung geschlossen. Versuche erneut zu verbinden...');
+      setTimeout(connectWebSocket, 2000); // Verbindung nach 2 Sekunden erneut aufbauen
+    };
+  
+    socket.onerror = function(error) {
+      console.error('WebSocket-Fehler aufgetreten: ', error);
+    };
+}
 
-socket.onclose = function() {
-    console.log('WebSocket-Verbindung geschlossen.');
-};
-
-socket.onerror = function(error) {
-    console.error('WebSocket-Fehler aufgetreten: ', error);
-};
+// Initialer Verbindungsaufbau
+connectWebSocket();
 
 function sendMessage() {
     const table = document.getElementById('matrixTable');

@@ -2,32 +2,38 @@ var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const id = params.get('id');
 
-const socket = new WebSocket(`wss://crystal-reliable-slipper.glitch.me?id=${id}`);
-
-socket.onopen = function() {
-    console.log('WebSocket-Verbindung hergestellt.');
-};
-
-socket.onclose = function() {
-    console.log('WebSocket-Verbindung geschlossen.');
-};
-
-socket.onerror = function(error) {
-    console.error('WebSocket-Fehler aufgetreten: ', error);
-};
-
-socket.onmessage = function(event) {
-    const tableHtml = event.data;
-    const tableContainer = document.getElementById('matrixTable');
-
-    tableContainer.innerHTML = renderTable(tableHtml);
-
-    renderText(tableHtml);
-
-    adjustFontSize();
-
-    console.log('Nachricht vom Server erhalten:', tableHtml);
-};
+function connectWebSocket() {
+    const socket = new WebSocket(`wss://crystal-reliable-slipper.glitch.me?id=${id}`);
+  
+    socket.onopen = function() {
+      console.log('WebSocket-Verbindung hergestellt.');
+    };
+  
+    socket.onclose = function() {
+      console.log('WebSocket-Verbindung geschlossen. Versuche erneut zu verbinden...');
+      setTimeout(connectWebSocket, 2000); // Verbindung nach 2 Sekunden erneut aufbauen
+    };
+  
+    socket.onerror = function(error) {
+      console.error('WebSocket-Fehler aufgetreten: ', error);
+    };
+  
+    socket.onmessage = function(event) {
+      const tableHtml = event.data;
+      const tableContainer = document.getElementById('matrixTable');
+  
+      tableContainer.innerHTML = renderTable(tableHtml);
+  
+      renderText(tableHtml);
+  
+      adjustFontSize();
+  
+      console.log('Nachricht vom Server erhalten:', tableHtml);
+    };
+  }
+  
+// Initialer Verbindungsaufbau
+connectWebSocket();
 
 function renderTable(tableHtml) {
     const endIndex = tableHtml.indexOf("<textbegin>");
