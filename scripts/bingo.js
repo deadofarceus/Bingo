@@ -152,7 +152,7 @@ var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const id = params.get('id');
 
-const socket = new WebSocket(`ws://crystal-reliable-slipper.glitch.me?id=${id}`);
+const socket = new WebSocket(`wss://crystal-reliable-slipper.glitch.me?id=${id}`);
 
 // Event-Handler für Verbindungsereignisse
 socket.onopen = function() {
