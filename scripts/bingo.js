@@ -68,11 +68,13 @@ function startBingo() {
             var textarea = textareas[i];
             textarea.classList.add("clickable");
             textarea.addEventListener("click", toggleBackgroundColor);
+            textarea.addEventListener("click", sendMessage);
             textarea.readOnly = true;
         }
 
         var startButton = document.getElementById("startButton");
         startButton.innerHTML = "Init new Bingo";
+        sendMessage();
     }
 }
 
@@ -134,8 +136,71 @@ function adjustFontSize() {
 }
   
 // Call the adjustFontSize function whenever the content of a textarea changes
-var textareas = document.getElementsByTagName("textarea");
+const textareas = document.getElementsByTagName("textarea");
 for (var i = 0; i < textareas.length; i++) {
     textareas[i].addEventListener("input", adjustFontSize);
 }
-  
+
+
+
+
+
+
+
+
+var url = new URL(window.location.href);
+var params = new URLSearchParams(url.search);
+const id = params.get('id');
+
+const socket = new WebSocket(`ws://crystal-reliable-slipper.glitch.me?id=${id}`);
+
+// Event-Handler für Verbindungsereignisse
+socket.onopen = function() {
+    console.log('WebSocket-Verbindung hergestellt.');
+};
+
+socket.onclose = function() {
+    console.log('WebSocket-Verbindung geschlossen.');
+};
+
+socket.onerror = function(error) {
+    console.error('WebSocket-Fehler aufgetreten: ', error);
+};
+
+function sendMessage() {
+    const table = document.getElementById('matrixTable');
+    const sendedTextareas = document.getElementsByTagName("textarea");
+    var tableHtml = id + table.innerHTML; // HTML-Code des Tables als String erhalten
+    console.log(table);
+    tableHtml = addText(tableHtml, sendedTextareas);
+    socket.send(tableHtml);
+    console.log('Nachricht an den Server gesendet:', tableHtml);
+}
+
+function addText(message, sendedTextareas) {
+    for (let index = 0; index < sendedTextareas.length; index++) {
+        message = message + "<textbegin>"
+        message = message + sendedTextareas[index].value;
+    }
+    message = message + "<textbegin>"
+    return message;
+}
+
+function generateTableHtml(table, textareas2) {
+    let html = '';
+
+    for (let i = 0; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        html += '<tr>';
+
+        for (let j = 0; j < row.cells.length; j++) {
+            const cell = row.cells[j];
+            const textarea = textareas2[i * row.cells.length + j];
+            html += `<td>${textarea.value}</td>`;
+        }
+
+        html += '</tr>';
+    }
+
+    return html;
+}

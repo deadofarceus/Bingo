@@ -1,8 +1,9 @@
 function initField() {
-    var rows = document.getElementById('rows').value;
-    var columns = document.getElementById('columns').value;
+    const id = document.getElementById('query').value;
+    const rows = document.getElementById('rows').value;
+    const columns = document.getElementById('columns').value;
 
-    if (rows < 1 || columns < 1) {
+    if (rows < 1 || columns < 1 || rows != columns || id == "") {
         return;
     }
     // Create the matrix
@@ -18,5 +19,15 @@ function initField() {
     localStorage.setItem("bingoMatrix", JSON.stringify(matrix));
 
     // Redirect to bingo.html
-    window.location.href = "bingo.html";
+    window.location.href = `bingo.html?id=${id}`;
+}
+
+function passiv() {
+    const id = document.getElementById('query').value;
+
+    if (id == "") {
+        return;
+    }
+
+    window.location.href = `passiv.html?id=${id}`
 }
