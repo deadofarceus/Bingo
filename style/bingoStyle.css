@@ -103,6 +103,6 @@ button:hover {
     cursor: pointer;
 }
   
-.white-background {
-    background-color: rgb(143, 0, 31) !important;
+.marked {
+    background-color: #8f001f !important;
 }

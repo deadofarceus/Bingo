@@ -30,7 +30,7 @@ function connectWebSocket() {
   
       console.log('Nachricht vom Server erhalten:', tableHtml);
     };
-  }
+}
   
 // Initialer Verbindungsaufbau
 connectWebSocket();

@@ -106,7 +106,7 @@ function randomizeBingo() {
 function toggleBackgroundColor(event) {
     if (bingoStarted) {
         var textarea = event.target;
-        textarea.classList.toggle("white-background");
+        textarea.classList.toggle("marked");
     }
 }
 
@@ -177,6 +177,7 @@ connectWebSocket();
 function sendMessage() {
     const table = document.getElementById('matrixTable');
     const sendedTextareas = document.getElementsByTagName("textarea");
+    sendedTextareas[0].classList
     var tableHtml = id + table.innerHTML; // HTML-Code des Tables als String erhalten
     console.log(table);
     tableHtml = addText(tableHtml, sendedTextareas);
@@ -186,7 +187,7 @@ function sendMessage() {
 
 function addText(message, sendedTextareas) {
     for (let index = 0; index < sendedTextareas.length; index++) {
-        message = message + "<textbegin>"
+        message = message + "<textbegin><" + sendedTextareas[index].classList +">"
         message = message + sendedTextareas[index].value;
     }
     message = message + "<textbegin>"
