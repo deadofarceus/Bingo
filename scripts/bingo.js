@@ -62,6 +62,7 @@ function startBingo() {
     if(bingoStarted) {
         window.location.href = "index.html";
     } else {
+        speichernBingo();
         randomizeButton.remove();
         bingoStarted = true;
         for (var i = 0; i < textareas.length; i++) {
@@ -146,6 +147,53 @@ for (var i = 0; i < textareas.length; i++) {
 
 
 
+function speichernBingo() {
+    var bingoTable = document.getElementById("matrixTable").innerHTML;
+    const sendedTextareas = document.getElementsByTagName("textarea");
+    bingoTable = addText(bingoTable, sendedTextareas);
+    localStorage.setItem("bingoTable", bingoTable);
+    console.log("SPEICHERN  MIT      " + bingoTable);
+}
+  
+// Funktion zum Abrufen des gespeicherten Werts beim Laden der Seite
+window.onload = function() {
+    var bingoTable = localStorage.getItem("bingoTable");
+    if (bingoTable) {
+        document.getElementById("matrixTable").innerHTML = renderTable(bingoTable);
+        renderText(bingoTable);
+    }
+    console.log("REALAD MIT" + bingoTable);
+};
+
+function renderTable(tableHtml) {
+    const endIndex = tableHtml.indexOf("<textbegin>");
+    if (endIndex !== -1) {
+        return tableHtml.substring(0, endIndex);
+    }
+    return tableHtml;
+}
+
+function renderText(tableHtml) {
+    const textareas = document.getElementsByTagName("textarea");
+
+    let startIndex = tableHtml.indexOf("<textbegin>");
+    let endIndex = tableHtml.indexOf("<textbegin>", startIndex + 1);
+    
+    for (let index = 0; index < textareas.length; index++) {
+        if (startIndex !== -1 && endIndex !== -1) {
+            startIndex = startIndex + 13;
+            const example = tableHtml.substring(startIndex, endIndex);
+            textareas[index].textContent = example.trim();
+            startIndex = endIndex;
+            endIndex = tableHtml.indexOf("<textbegin>", startIndex + 1);
+        } else {
+            textareas[index].textContent = "";
+        }
+    }
+}
+
+
+
 
 
 var url = new URL(window.location.href);
@@ -160,7 +208,7 @@ function connectWebSocket() {
     socket.onopen = function() {
       console.log('WebSocket-Verbindung hergestellt.');
     };
-  
+
     socket.onclose = function() {
       console.log('WebSocket-Verbindung geschlossen. Versuche erneut zu verbinden...');
       setTimeout(connectWebSocket, 2000); // Verbindung nach 2 Sekunden erneut aufbauen

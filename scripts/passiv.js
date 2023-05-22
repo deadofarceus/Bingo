@@ -6,29 +6,29 @@ function connectWebSocket() {
     const socket = new WebSocket(`wss://crystal-reliable-slipper.glitch.me?id=${id}`);
   
     socket.onopen = function() {
-      console.log('WebSocket-Verbindung hergestellt.');
+        console.log('WebSocket-Verbindung hergestellt.');
     };
   
     socket.onclose = function() {
-      console.log('WebSocket-Verbindung geschlossen. Versuche erneut zu verbinden...');
-      setTimeout(connectWebSocket, 2000); // Verbindung nach 2 Sekunden erneut aufbauen
+        console.log('WebSocket-Verbindung geschlossen. Versuche erneut zu verbinden...');
+        setTimeout(connectWebSocket, 2000); // Verbindung nach 2 Sekunden erneut aufbauen
     };
   
     socket.onerror = function(error) {
-      console.error('WebSocket-Fehler aufgetreten: ', error);
+        console.error('WebSocket-Fehler aufgetreten: ', error);
     };
   
     socket.onmessage = function(event) {
-      const tableHtml = event.data;
-      const tableContainer = document.getElementById('matrixTable');
-  
-      tableContainer.innerHTML = renderTable(tableHtml);
-  
-      renderText(tableHtml);
-  
-      adjustFontSize();
-  
-      console.log('Nachricht vom Server erhalten:', tableHtml);
+        const tableHtml = event.data;
+        const tableContainer = document.getElementById('matrixTable');
+    
+        tableContainer.innerHTML = renderTable(tableHtml);
+    
+        renderText(tableHtml);
+    
+        adjustFontSize();
+    
+        console.log('Nachricht vom Server erhalten:', tableHtml);
     };
 }
   
@@ -51,12 +51,17 @@ function renderText(tableHtml) {
     
     for (let index = 0; index < textareas.length; index++) {
         if (startIndex !== -1 && endIndex !== -1) {
-            const example = tableHtml.substring(startIndex + 11, endIndex);
-            textareas[index].value = example.trim();
+            if (tableHtml.substring(startIndex + 11, endIndex).includes("marked")) {
+                startIndex = startIndex + 29;
+            } else {
+                startIndex = startIndex + 22;
+            }
+            const example = tableHtml.substring(startIndex, endIndex);
+            textareas[index].textContent = example.trim();
             startIndex = endIndex;
             endIndex = tableHtml.indexOf("<textbegin>", startIndex + 1);
         } else {
-            textareas[index].value = "";
+            textareas[index].textContent = "";
         }
     }
 }
