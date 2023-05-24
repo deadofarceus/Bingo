@@ -1,0 +1,70 @@
+:root {
+    --dark-red: #68170B;
+    --orange: #DF3A14;
+    --mint: #C2D3C5;
+    --dark-green: #6E8471;
+}
+
+body {
+    /* background-image: url("../resources/kutcherBackground.jpg"); */
+    /* background-size: cover; */
+    background-repeat: no-repeat;
+    font-family: 'Signika', sans-serif;
+}
+
+.row {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    width: 100%;
+    justify-content: center;
+}
+  
+
+text {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--dark-green);
+    padding: 5%;
+}
+
+.text-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: radial-gradient(ellipse at top left, var(--mint) 87%, transparent 88%), var(--dark-green);
+    background-size: 100% 100%, auto;
+    background-repeat: no-repeat;
+    border-radius: 0 0 10px 0;
+
+    margin: auto;
+    border-radius: 10px;
+    height: 130px;
+    width: 205px;
+    font-size: 15px;
+}
+
+.marked {
+    /* background: ; */
+    /* animation: play-once 1s forwards; */
+    background: radial-gradient(ellipse at top left, var(--dark-red) 87%, transparent 88%), var(--orange);
+}
+
+.marked text {
+    color: azure !important;
+}
+  
+@keyframes play-once {
+    100% {
+      background-image: url("../resources/zwinker.gif");
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+}
+  
