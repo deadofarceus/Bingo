@@ -62,6 +62,18 @@ const prompts = [
     "Frank erotisiert Essen",
     "Touchy Frank ist touchy (viel zu oft)",
     "Frank versteckt Sterne (egal ob am Anfang oder Ende)",
+    "Katy Perry Song",
+    "Die K\u00FCchenhilfe ist besser als der Koch",
+    "Ein Kind liest einen Satz komplett ab",
+    "Keiner der Besitzer ist gelernter Gastronom",
+    "Schulden werden ohne \"tausend\" genannt",
+    "Frank bel\u00E4stigt mehr als eine Frau",
+    "Frank kommt fremden Kindern zu nahe",
+    "Kamera verfolgt eine Person die alleine gelassen werden m\u00F6chte",
+    "Entscheidung: Laden schlie\u00DFen oder radikaler Neustart",
+    "Personen haben gar kein Bock mehr auf Aufnahmen",
+    "Unangenehm langes H\u00E4ndehalten/-sch\u00FCtteln",
+    "Die Küche ist gut, aber frank findet sie schei\u00DFe",
 ];
 // Retrieve the matrix from localStorage
 var matrix = JSON.parse(localStorage.getItem("bingoMatrix"));
