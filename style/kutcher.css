@@ -52,19 +52,37 @@ text {
 
 .marked {
     /* background: ; */
-    /* animation: play-once 1s forwards; */
-    background: radial-gradient(ellipse at top left, var(--dark-red) 87%, transparent 88%), var(--orange);
+    animation: play-once 1s forwards;
+    animation-duration: 5000ms;
 }
 
 .marked text {
-    color: azure !important;
+    animation: play-once-text 1s forwards;
+    animation-duration: 1500ms;
+}
+
+@keyframes play-once-text {
+    0% {
+        color: transparent;
+    }
+    99% {
+        color: transparent;
+    }
+    100% {
+        color: azure;
+    }
 }
   
 @keyframes play-once {
-    100% {
-      background-image: url("../resources/zwinker.gif");
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
+    0% {
+        background-image: url("../resources/zwinker.gif");
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      100% {
+        background: radial-gradient(ellipse at top left, var(--dark-red) 87%, transparent 88%), var(--orange);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
 }
   
