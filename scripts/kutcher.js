@@ -22,7 +22,6 @@ function connectWebSocket() {
         const tableHtml = event.data;
 
         renderText(tableHtml);
-        // adjustFontSize();
         adjustTextSize();
 
         console.log('Nachricht vom Server erhalten:', tableHtml);
@@ -47,14 +46,15 @@ function renderText(tableHtml) {
 
                 const example = tableHtml.substring(startIndex, endIndex);
                 texts[index].textContent = example.trim();
-                //TODO Frank zwinkert
             } else {
                 startIndex = startIndex + 22;
                 textContainers[index].classList.remove("marked");
 
                 const example = tableHtml.substring(startIndex, endIndex);
-                if (!example.trim().includes("Philly")) {
-                    texts[index].textContent = example.trim();
+                const alhye = example.trim();
+                console.log(alhye);
+                if (!alhye.includes("Philly")) {
+                    texts[index].textContent = alhye;
                 }
             }
             startIndex = endIndex;
@@ -70,6 +70,11 @@ function adjustTextSize() {
   
     textContainers.forEach((container) => {
         const textElement = container.querySelector('text');
+
+        if (textElement.textContent === "") {
+            return;
+        }
+
         const containerWidth = container.offsetWidth;
         const containerHeight = container.offsetHeight;
 

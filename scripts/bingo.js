@@ -74,6 +74,11 @@ const prompts = [
     "Personen haben gar kein Bock mehr auf Aufnahmen",
     "Unangenehm langes H\u00E4ndehalten/-sch\u00FCtteln",
     "Die Küche ist gut, aber frank findet sie schei\u00DFe",
+    "Frank fragt, wie es einem damit geht",
+    "Frank erkl\u00E4rt wie man Preise kalkuliert",
+    "Frank ist seine Portion beim Testessen auf",
+    "Frank k\u00FCsst 2 oder mehr der Teilnehmer*Innen auf Wange oder Stirn",
+    "Frank muss sich das durch den Kopf gehen lassen"
 ];
 // Retrieve the matrix from localStorage
 var matrix = JSON.parse(localStorage.getItem("bingoMatrix"));
