@@ -45,15 +45,20 @@ function renderText(tableHtml) {
                 textContainers[index].classList.add("marked");
 
                 const example = tableHtml.substring(startIndex, endIndex);
-                texts[index].textContent = example.trim();
+                var alhye = example.trim();
+                if (alhye.includes("hide")) {
+                    alhye = alhye.replace("hide", "");
+                }
+
+                texts[index].textContent = alhye;
             } else {
                 startIndex = startIndex + 22;
                 textContainers[index].classList.remove("marked");
 
                 const example = tableHtml.substring(startIndex, endIndex);
                 const alhye = example.trim();
-                console.log(alhye);
-                if (!alhye.includes("Philly")) {
+
+                if (!alhye.includes("hide") && !alhye.includes("Philly")) {
                     texts[index].textContent = alhye;
                 }
             }
