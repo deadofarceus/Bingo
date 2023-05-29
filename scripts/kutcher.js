@@ -60,6 +60,8 @@ function renderText(tableHtml) {
 
                 if (!alhye.includes("hide") && !alhye.includes("Philly")) {
                     texts[index].textContent = alhye;
+                } else {
+                    texts[index].textContent = "Verdeckt"
                 }
             }
             startIndex = endIndex;
