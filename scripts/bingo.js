@@ -78,7 +78,22 @@ const prompts = [
     "Frank erkl\u00E4rt wie man Preise kalkuliert",
     "Frank ist seine Portion beim Testessen auf",
     "Frank k\u00FCsst 2 oder mehr der Teilnehmer*Innen auf Wange oder Stirn",
-    "Frank muss sich das durch den Kopf gehen lassen"
+    "Frank muss sich das durch den Kopf gehen lassen",
+    "Schulden \u00FCber 20k",
+    "Weniger als 20 oder 2 Sterne",
+    "Franks Kindheit wird erw\u00E4hnt",
+    "Adele Song",
+    "2 oder mehr Frank Zwinkerer",
+    "4 oder mehr T\u00FCrmonologe",
+    "K\u00FCchenchef ist kein gelernter Koch",
+    "Untertitel, obwohl man alles versteht",
+    "Franks Nackengriff",
+    "Punktedifferenz von 25 oder mehr",
+    "Testesser meint Fleisch ist \"zu trocken\"",
+    "Frank macht einen schlechten Witz",
+    "Lebensmittel aus eine bestimmten Region sollen verwendet werden",
+    "Es wird erw\u00E4hnt, dass Frank 2 Sterne hat",
+    "Service rettet die Punktzahl",
 ];
 // Retrieve the matrix from localStorage
 var matrix = JSON.parse(localStorage.getItem("bingoMatrix"));
