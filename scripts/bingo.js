@@ -89,11 +89,19 @@ const prompts = [
     "Untertitel, obwohl man alles versteht",
     "Franks Nackengriff",
     "Punktedifferenz von 25 oder mehr",
-    "Testesser meint Fleisch ist \"zu trocken\"",
+    "Testesser*in meint Fleisch ist \"zu trocken\"",
     "Frank macht einen schlechten Witz",
     "Lebensmittel aus eine bestimmten Region sollen verwendet werden",
     "Es wird erw\u00E4hnt, dass Frank 2 Sterne hat",
     "Service rettet die Punktzahl",
+    "Im Restaurant gibt es Schnitzel (auf der Karte)",
+    "Etwas wird mit Weißwein abgel\u00F6scht",
+    "Testesser kritisiert das gleiche wie Frank",
+    "Lob/Dank an Frank klingt absolut abgelesen und emotionslos",
+    "Frank will mit Partner*in der betreibenden Person alleine gelassen werden",
+    "Frank wird f\u00E4lschlicherweise als 2 Sterne Koch bezeichnet / Philly kommentiert es",
+    "Frank will \"Eigeninitiative\" sehen",
+    "Frank sagt \"Du kannst es doch!\""
 ];
 // Retrieve the matrix from localStorage
 var matrix = JSON.parse(localStorage.getItem("bingoMatrix"));
