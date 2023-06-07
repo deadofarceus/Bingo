@@ -1,19 +1,35 @@
-body {
-    background-color: transparent;
+:root {
+    --dark-red: #68170B;
+    --orange: #DF3A14;
+    --mint: #C2D3C5;
+    --dark-green: #508c58;
 }
 
-.column {
+body {
+    background-image: url("../resources/RosinBingoBackground.png");
+    /* background-size: cover; */
+    background-repeat: no-repeat;
+    font-family: 'Signika', sans-serif;
+}
+
+.row {
+    position: fixed;
+    bottom: 12px;
+    left: 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: flex-end;
-    height: 1080px;
+    width: 100%;
+    justify-content: center;
 }
   
+
 text {
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: rgb(255, 225, 225);
+    color: azure;
     padding: 5%;
 }
 
@@ -21,22 +37,52 @@ text {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #606c88;
-    background: -webkit-radial-gradient(circle, #606c88 0%, #3f4c6b 100%);
-    background: radial-gradient(circle, #606c88 0%, #3f4c6b 100%);
-    border: 3px solid;
-    border-color: #616e76;
-    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2), 0 2px 4px rgba(0, 0, 0, 0.3);
+
+    background: radial-gradient(ellipse at top left, var(--dark-red) 87%, transparent 88%), var(--orange);
+    background-size: 100% 100%, auto;
+    background-repeat: no-repeat;
+    border-radius: 0 0 10px 0;
+
+    margin: auto;
     border-radius: 10px;
-    margin-bottom: 0;
-    height: calc(100vh / 9);
-    width: 200px;
-    font-family: 'Lato', sans-serif;
-    font-weight: bold;
+    height: 150px;
+    width: 205px;
     font-size: 15px;
 }
 
 .marked {
-    background: -webkit-radial-gradient(circle, #7e3434 0%, #8f001f 100%);
+    /* background: ; */
+    animation: play-once 1s forwards;
+    animation-duration: 5000ms;
+}
+
+.marked text {
+    animation: play-once-text 1s forwards;
+    animation-duration: 1500ms;
+}
+
+@keyframes play-once-text {
+    0% {
+        color: transparent;
+    }
+    99% {
+        color: transparent;
+    }
+    100% {
+        color: #467b4d;
+    }
+}
+  
+@keyframes play-once {
+    0% {
+        background-image: url("../resources/zwinker.gif");
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      100% {
+        background: radial-gradient(ellipse at top left, var(--mint) 87%, transparent 88%), var(--dark-green);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
 }
   
