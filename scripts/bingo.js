@@ -101,7 +101,13 @@ const prompts = [
     "Frank will mit Partner*in der betreibenden Person alleine gelassen werden",
     "Frank wird f\u00E4lschlicherweise als 2 Sterne Koch bezeichnet / Philly kommentiert es",
     "Frank will \"Eigeninitiative\" sehen",
-    "Frank sagt \"Du kannst es doch!\""
+    "Frank sagt \"Du kannst es doch!\"",
+    "Besitzer \"verstecken\" sich vor Frank",
+    "Unn\u00F6tige Motivationsrede",
+    "Frank slappt das Fleisch",
+    "Frank erkl\u00E4rt wo etwas herkommt",
+    "Frank bekommt einen Geschmacksorgasmus beim Probieren seiner eigenen Gerichte",
+    "Frank schmatzt"
 ];
 // Retrieve the matrix from localStorage
 var matrix = JSON.parse(localStorage.getItem("bingoMatrix"));
