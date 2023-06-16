@@ -107,7 +107,14 @@ const prompts = [
     "Frank slappt das Fleisch",
     "Frank erkl\u00E4rt wo etwas herkommt",
     "Frank bekommt einen Geschmacksorgasmus beim Probieren seiner eigenen Gerichte",
-    "Frank schmatzt"
+    "Frank schmatzt",
+    "Chat called Bingo obwohl es keines gab hide",
+    "Frank l\u00E4stert vor der Kamera über eine Person, die direkt hinter/neben ihm steht",
+    "Philly bezichnet Franks Outfit als swaggy",
+    "Frank tanzt",
+    "Unangenehmes Wortspiel",
+    "Frank sagt \"...., dann wird ein Schuh draus\"",
+    "Frank er\u00E4whnt sein eigenes Restaurant"
 ];
 // Retrieve the matrix from localStorage
 var matrix = JSON.parse(localStorage.getItem("bingoMatrix"));
