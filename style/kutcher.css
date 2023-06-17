@@ -45,20 +45,17 @@ text {
 
     margin: auto;
     border-radius: 10px;
-    height: 130px;
-    width: 205px;
+    height: 180px;
+    width: 190px;
     font-size: 15px;
 }
 
 .marked {
-    /* background: ; */
-    animation: play-once 1s forwards;
-    animation-duration: 5000ms;
+    animation: play-once 1580ms forwards;
 }
 
 .marked text {
-    animation: play-once-text 1s forwards;
-    animation-duration: 1500ms;
+    animation: play-once-text 1580ms forwards;
 }
 
 @keyframes play-once-text {
@@ -78,11 +75,16 @@ text {
         background-image: url("../resources/zwinker.gif");
         background-size: cover;
         background-repeat: no-repeat;
-      }
-      100% {
+    }
+    99% {
+        background-image: url("../resources/zwinker.gif");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    100% {
         background: radial-gradient(ellipse at top left, var(--mint) 87%, transparent 88%), var(--dark-green);
         background-size: cover;
         background-repeat: no-repeat;
-      }
+    }
 }
   
