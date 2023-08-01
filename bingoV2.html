@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bingo for Stream</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Signika:wght@700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style/bingoV2.css">
+</head>
+<body>
+        <div class="matrix">
+            <div class="row">
+                <button class="randomButton" id="1" onclick="randomizeArea(0)">random</button>
+                <button class="randomButton" id="2" onclick="randomizeArea(1)">random</button>
+                <button class="randomButton" id="3" onclick="randomizeArea(2)">random</button>
+            </div>
+            <div class="row">
+                <div class="text-container">
+                    <textarea id=""></textarea>
+                </div>
+                <div class="text-container">
+                    <textarea id=""></textarea>
+                </div>
+                <div class="text-container">
+                    <textarea id=""></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <button class="randomButton" id="4" onclick="randomizeArea(3)">random</button>
+                <button class="randomButton" id="5" onclick="randomizeArea(4)">random</button>
+                <button class="randomButton" id="6" onclick="randomizeArea(5)">random</button>
+            </div>
+            <div class="row">
+                <div class="text-container">
+                    <textarea id=""></textarea>
+                </div>
+                <div class="text-container">
+                    <textarea id=""></textarea>
+                </div>
+                <div class="text-container">
+                    <textarea id=""></textarea>
+                </div>
+            </div>
+            
+            <div class="row">
+                <button class="randomButton" id="7" onclick="randomizeArea(6)">random</button>
+                <button class="randomButton" id="8" onclick="randomizeArea(7)">random</button>
+                <button class="randomButton" id="9" onclick="randomizeArea(8)">random</button>
+            </div>
+            <div class="row">
+                <div class="text-container">
+                    <textarea id=""></textarea>
+                </div>
+                <div class="text-container">
+                    <textarea id=""></textarea>
+                </div>
+                <div class="text-container">
+                    <textarea id=""></textarea>
+                </div>
+            </div>
+            <button id="startButton" onclick="startBingo()">Start Bingo</button>
+    </div>
+    
+    <script src="scripts/bingoV2.js"></script>
+</body>
+</html>
