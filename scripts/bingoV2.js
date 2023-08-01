@@ -222,33 +222,6 @@ window.onload = function() {
     // console.log("REALOAD MIT" + bingoTable);
 };
 
-function renderTable(tableHtml) {
-    const endIndex = tableHtml.indexOf("<textbegin>");
-    if (endIndex !== -1) {
-        return tableHtml.substring(0, endIndex);
-    }
-    return tableHtml;
-}
-
-function renderText(tableHtml) {
-    const textareas = document.getElementsByTagName("textarea");
-
-    let startIndex = tableHtml.indexOf("<textbegin>");
-    let endIndex = tableHtml.indexOf("<textbegin>", startIndex + 1);
-    
-    for (let index = 0; index < textareas.length; index++) {
-        if (startIndex !== -1 && endIndex !== -1) {
-            startIndex = startIndex + 13;
-            const example = tableHtml.substring(startIndex, endIndex);
-            textareas[index].textContent = example.trim();
-            startIndex = endIndex;
-            endIndex = tableHtml.indexOf("<textbegin>", startIndex + 1);
-        } else {
-            textareas[index].textContent = "";
-        }
-    }
-}
-
 
 
 
@@ -295,23 +268,4 @@ function addText(message, sendedTextareas) {
     }
     message = message + "<textbegin>"
     return message;
-}
-
-function generateTableHtml(table, textareas2) {
-    let html = '';
-
-    for (let i = 0; i < table.rows.length; i++) {
-        const row = table.rows[i];
-        html += '<tr>';
-
-        for (let j = 0; j < row.cells.length; j++) {
-            const cell = row.cells[j];
-            const textarea = textareas2[i * row.cells.length + j];
-            html += `<td>${textarea.value}</td>`;
-        }
-
-        html += '</tr>';
-    }
-
-    return html;
 }
