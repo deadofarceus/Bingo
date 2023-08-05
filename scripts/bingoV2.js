@@ -114,7 +114,14 @@ const prompts = [
     "Frank tanzt",
     "Unangenehmes Wortspiel",
     "Frank sagt \"...., dann wird ein Schuh draus\"",
-    "Frank er\u00E4whnt sein eigenes Restaurant"
+    "Frank erw\u00E4hnt sein eigenes Restaurant",
+    "\"Buongiorno\"",
+    "Frank fragt \"Wie geht es dir dabei?\"",
+    "Einwohnerzahl des Ortes wird erw\u00E4hnt",
+    "Philly macht Werbung für seine Musik",
+    "(Haus)aufgaben nicht gemacht",
+    "Frank mag die Betreiber und hilft nur deshalb aka Frank spielt Empathie vor",
+    "Frank sagt 3 mal Speisenkarte"
 ];
 
 var bingoStarted = false;
