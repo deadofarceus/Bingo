@@ -36,4 +36,6 @@ function sendMessage() {
 
 function showData(correctBingos) {
     //TODO zeig einfach die map als Leaderboard sollte nicht os schwer sein Clueless
+    var textfeld = document.getElementById("test");
+    textfeld.innerText = correctBingos;
 }
