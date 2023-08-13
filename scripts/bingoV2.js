@@ -237,10 +237,10 @@ var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const id = params.get('id');
 
-var socket = new WebSocket(`wss://crystal-reliable-slipper.glitch.me?id=${id}`);
+var socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}`);
 
 function connectWebSocket() {
-    socket = new WebSocket(`wss://crystal-reliable-slipper.glitch.me?id=${id}`);
+    socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}`);
   
     socket.onopen = function() {
       console.log('WebSocket-Verbindung hergestellt.');

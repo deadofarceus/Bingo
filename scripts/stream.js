@@ -3,7 +3,7 @@ var params = new URLSearchParams(url.search);
 const id = params.get('id');
 
 function connectWebSocket() {
-    const socket = new WebSocket(`wss://crystal-reliable-slipper.glitch.me?id=${id}`);
+    const socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}`);
 
     socket.onopen = function () {
         console.log('WebSocket-Verbindung hergestellt.');

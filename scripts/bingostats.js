@@ -1,7 +1,7 @@
-var socket = new WebSocket(`wss://crystal-reliable-slipper.glitch.me`);
+var socket = new WebSocket(`wss://rosin-bingo.glitch.me`);
 
 function connectWebSocket() {
-    socket = new WebSocket(`wss://crystal-reliable-slipper.glitch.me`);
+    socket = new WebSocket(`wss://rosin-bingo.glitch.me`);
   
     socket.onopen = function() {
       console.log('WebSocket-Verbindung hergestellt.');
