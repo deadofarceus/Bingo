@@ -35,7 +35,31 @@ function sendMessage() {
 }
 
 function showData(correctBingos) {
-    //TODO zeig einfach die map als Leaderboard sollte nicht os schwer sein Clueless
-    var textfeld = document.getElementById("test");
-    textfeld.innerText = correctBingos;
+    const leaderboardDiv = document.getElementById("leaderboard");
+
+    // Sortiere die Daten nach Punkten (absteigend)
+    correctBingos.sort((a, b) => b[1] - a[1]);
+
+    correctBingos.forEach((person, index) => {
+      const box = document.createElement("div");
+      box.classList.add("box");
+      
+      const placement = document.createElement("p");
+      placement.textContent = `${index + 1}`;
+      placement.classList.add("placement");
+    
+      const name = document.createElement("p");
+      name.textContent = person[0];
+      name.classList.add("name");
+      
+      const points = document.createElement("p");
+      points.textContent = `${person[1]} Punkte`;
+      points.classList.add("points");
+      
+      box.appendChild(placement);
+      box.appendChild(name);
+      box.appendChild(points);
+      
+      leaderboardDiv.appendChild(box);
+    });
 }
