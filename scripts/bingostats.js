@@ -1,3 +1,12 @@
+class User {
+  constructor(name, points, numOfBets, pointsPerBingo) {
+    this.name = name;
+    this.points = points;
+    this.numOfBets = numOfBets;
+    this.pointsPerBingo = pointsPerBingo;
+  }
+}
+
 var socket = new WebSocket(`wss://rosin-bingo.glitch.me`);
 
 function connectWebSocket() {
@@ -38,7 +47,7 @@ function showData(correctBingos) {
     const leaderboardDiv = document.getElementById("leaderboard");
 
     // Sortiere die Daten nach Punkten (absteigend)
-    correctBingos.sort((a, b) => b[1] - a[1]);
+    correctBingos.sort((a, b) => b[1].points - a[1].points);
 
     correctBingos.forEach((person, index) => {
       const box = document.createElement("div");
@@ -53,12 +62,17 @@ function showData(correctBingos) {
       name.classList.add("name");
       
       const points = document.createElement("p");
-      points.textContent = `${person[1]} Punkte`;
+      points.textContent = `${person[1].points} Punkte`;
       points.classList.add("points");
+
+      const pointsPerBingo = document.createElement("p");
+      pointsPerBingo.textContent = `${person[1].pointsPerBingo} P/B`;
+      pointsPerBingo.classList.add("points");
       
       box.appendChild(placement);
       box.appendChild(name);
       box.appendChild(points);
+      box.appendChild(pointsPerBingo);
       
       leaderboardDiv.appendChild(box);
     });
