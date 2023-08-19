@@ -395,3 +395,16 @@ function showData(collectedBets) {
       }
     });
 }
+
+function startBingo() {
+    // socket.send(id + "startBingo");
+}
+
+function stopBingo() {
+    const bingos = document.getElementById('numOfBingos').value;
+    // socket.send(id + "stopBingo " + bingos);
+}
+
+function clearBets() {
+    // socket.send(id + "clearBets");
+}
