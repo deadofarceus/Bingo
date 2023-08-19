@@ -325,6 +325,7 @@ function connectWebSocket() {
   
     socket.onopen = function() {
       console.log('WebSocket-Verbindung hergestellt.');
+      getBingoBets();
     };
 
     socket.onclose = function() {
@@ -334,6 +335,14 @@ function connectWebSocket() {
   
     socket.onerror = function(error) {
       console.error('WebSocket-Fehler aufgetreten: ', error);
+    };
+
+    socket.onmessage = function (event) {
+        const data = event.data;
+
+        showData(JSON.parse(data)); // ARRAY in form von 
+
+        console.log('Nachricht vom Server erhalten:', data);
     };
 }
 
@@ -356,4 +365,33 @@ function addText(message, sendedTextareas) {
     }
     message = message + "<textbegin>"
     return message;
+}
+
+function getBingoBets() {
+    socket.send("GET BINGO BETS");
+    console.log('Request sent');
+}
+
+function showData(collectedBets) {
+
+    const counts = {};
+
+    collectedBets.forEach((element, index) => {
+        counts[element[1]] = (counts[element[1]] || 0) + 1;
+    });
+
+    console.log(counts);
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+        datasets: [{
+          label: 'Bingo Wetten',
+          data: counts,
+          backgroundColor: 'green'
+        }]
+      }
+    });
 }
