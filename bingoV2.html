@@ -7,8 +7,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Signika:wght@700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style/bingoV2.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <div id="inhalt">
+        <div id="bingoControl">
+            <button class="controlButton">Start Voting</button>
+            <button class="controlButton">Clear Votes</button>
+            <div class="input-row">
+                <button class="controlButton">Stop Voting</button>
+                <input type="number" id="numOfBingos" placeholder="0">
+            </div>
+        </div>
         <div class="matrix">
             <div class="row">
                 <button class="randomButton" id="1" onclick="randomizeArea(0)">random</button>
@@ -26,9 +36,9 @@
                     <textarea id=""></textarea>
                 </div>
             </div>
-
+    
             <div class="row">
-                <button class="randomButton" id="4" onclick="randomizeArea(3)">random</button>
+               <button class="randomButton" id="4" onclick="randomizeArea(3)">random</button>
                 <button class="randomButton" id="5" onclick="randomizeArea(4)">random</button>
                 <button class="randomButton" id="6" onclick="randomizeArea(5)">random</button>
             </div>
@@ -40,10 +50,10 @@
                     <textarea id=""></textarea>
                 </div>
                 <div class="text-container">
-                    <textarea id=""></textarea>
+                   <textarea id=""></textarea>
                 </div>
             </div>
-            
+                
             <div class="row">
                 <button class="randomButton" id="7" onclick="randomizeArea(6)">random</button>
                 <button class="randomButton" id="8" onclick="randomizeArea(7)">random</button>
@@ -61,8 +71,12 @@
                 </div>
             </div>
             <button id="startButton" onclick="startBingo()">Start Bingo</button>
+        </div>
+        <div id="bingoBets">
+            <canvas id="myChart" width="600" height="600"></canvas>
+        </div>
     </div>
-    
+
     <script src="scripts/bingoV2.js"></script>
 </body>
 </html>
