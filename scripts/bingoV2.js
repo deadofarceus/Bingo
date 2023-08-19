@@ -357,16 +357,3 @@ function addText(message, sendedTextareas) {
     message = message + "<textbegin>"
     return message;
 }
-
-var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4'],
-        datasets: [{
-          label: 'Data Set',
-          data: [30, 50, 70, 40],
-          backgroundColor: ['red', 'blue', 'green', 'purple']
-        }]
-      }
-    });

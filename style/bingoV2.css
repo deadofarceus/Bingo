@@ -175,3 +175,30 @@ input[type=number]::placeholder {
 .marked {
     background-color: #8f001f !important;
 }
+
+/* GEHT NICHT ICH HASSE CSS UltraMad */
+/* CSS-Styling für das Diagramm-Canvas */
+#myChart {
+    border: 5px solid #999999;
+    border-radius: 5px;
+    background-color: #000000;
+}
+  
+/* Stil für die Diagrammbalken */
+.bar {
+    background-color: rgba(0, 123, 255, 0.7);
+    transition: height 0.5s;
+}
+  
+/* Stil für die Achsen */
+.chartjs-chart {
+    background-color: #f9f9f9;
+}
+  
+/* Stil für Beschriftungen */
+.chartjs-chart .axis-label {
+    font-family: 'Signika', sans-serif;
+    font-size: 12px;
+    color: #FFFFFF;
+}
+  
