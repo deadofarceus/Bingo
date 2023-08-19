@@ -396,15 +396,21 @@ function showData(collectedBets) {
     });
 }
 
-function startBingo() {
-    // socket.send(id + "startBingo");
+function startBingoCommand() {
+    // const msg = id + "<startBingo";
+    // socket.send(msg);
+    // console.log('Nachricht an den Server gesendet:', msg);
 }
 
 function stopBingo() {
-    const bingos = document.getElementById('numOfBingos').value;
-    // socket.send(id + "stopBingo " + bingos);
+    // const bingos = document.getElementById('numOfBingos').value;
+    // const msg = id + "<!stopBingo " + bingos;
+    // socket.send(msg);
+    // console.log('Nachricht an den Server gesendet:', msg);
 }
 
 function clearBets() {
-    // socket.send(id + "clearBets");
+    // const msg = id + "<clearBets";
+    // socket.send(msg);
+    // console.log('Nachricht an den Server gesendet:', msg);
 }
