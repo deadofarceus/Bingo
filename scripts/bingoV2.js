@@ -325,7 +325,6 @@ function connectWebSocket() {
   
     socket.onopen = function() {
       console.log('WebSocket-Verbindung hergestellt.');
-      getBingoBets();
     };
 
     socket.onclose = function() {
@@ -338,11 +337,18 @@ function connectWebSocket() {
     };
 
     socket.onmessage = function (event) {
-        const data = event.data;
+        const message = event.data;
 
-        showData(JSON.parse(data)); // ARRAY in form von 
-
-        console.log('Nachricht vom Server erhalten:', data);
+        if (message.startsWith("vote")) {
+            updateChart(message.substring(4));
+        } else if (message.startsWith("start")) {
+            deleteChart();
+            createNewChart();
+        } else if (message.startsWith("stopVoting")) {
+            
+        } else {
+            // showData(JSON.parse(message)); // ARRAY in form von 
+        }
     };
 }
 
@@ -367,32 +373,97 @@ function addText(message, sendedTextareas) {
     return message;
 }
 
-function getBingoBets() {
-    socket.send("GET BINGO BETS");
-    console.log('Request sent');
+const ctx = document.getElementById('myChart').getContext('2d');
+const chartBox = document.getElementById('bingoBets');
+var myChart;
+
+function updateChart(vote) {
+    var labelIndex = myChart.data.labels.indexOf(vote);
+    
+    if (labelIndex !== -1) {
+        myChart.data.datasets[0].data[labelIndex]++;
+        myChart.update();
+    }
 }
 
-function showData(collectedBets) {
+function deleteChart() {
+    if (myChart !== undefined) {
+        chartBox.style.display = 'none';
+        myChart.destroy();
+    }
+}
 
-    const counts = {};
-
-    collectedBets.forEach((element, index) => {
-        counts[element[1]] = (counts[element[1]] || 0) + 1;
-    });
-
-    console.log(counts);
-
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-        datasets: [{
-          label: 'Bingo Wetten',
-          data: counts,
-          backgroundColor: 'green'
-        }]
-      }
+function createNewChart() {
+    chartBox.style.display = 'block';
+    myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+            datasets: [{
+                label: 'Bingo Wetten',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                backgroundColor: 'green'
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            family: 'Arial', // Schriftart für Legende
+                            weight: 'bold', // Fettdruck für Legende
+                            size: 15,
+                        },
+                        color: 'white' // Schriftfarbe für Legende
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Anzahl Bingos', // Titel der X-Achse
+                        font: {
+                            family: 'Arial', // Schriftart für X-Achse
+                            weight: 'bold', // Fettdruck für X-Achse
+                            size: 15,
+                        },
+                        color: 'white' // Schriftfarbe für X-Achse
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Arial', // Schriftart für X-Achsen-Zahlen
+                            weight: 'bold', // Fettdruck für X-Achsen-Zahlen
+                            size: 15,
+                        },
+                        color: 'white' // Schriftfarbe für X-Achsen-Zahlen
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Anzahl Wetten', // Titel der Y-Achse
+                        font: {
+                            family: 'Arial', // Schriftart für Y-Achse
+                            weight: 'bold', // Fettdruck für Y-Achse
+                            size: 15,
+                        },
+                        color: 'white' // Schriftfarbe für Y-Achse
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Arial', // Schriftart für X-Achsen-Zahlen
+                            weight: 'bold', // Fettdruck für X-Achsen-Zahlen
+                            size: 15,
+                        },
+                        color: 'white' // Schriftfarbe für X-Achsen-Zahlen
+                    }
+                }
+            },
+            animation: {
+                duration: 0 // Deaktiviert die Aufbauanimation
+            }
+        }
     });
 }
 

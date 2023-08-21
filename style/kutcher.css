@@ -87,4 +87,19 @@ text {
         background-repeat: no-repeat;
     }
 }
-  
+
+
+#myChart {
+    border: 5px solid var(--dark-red);
+    border-radius: 5px;
+    background-color: #737373f1;
+}
+
+#bingoBets {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 500px;
+    height: 400px;
+    display: none;
+}
