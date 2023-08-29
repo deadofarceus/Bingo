@@ -64,15 +64,10 @@ function showData(correctBingos) {
       const points = document.createElement("p");
       points.textContent = `${person[1].points} Punkte`;
       points.classList.add("points");
-
-      const pointsPerBingo = document.createElement("p");
-      pointsPerBingo.textContent = `${person[1].pointsPerBingo} P/B`;
-      pointsPerBingo.classList.add("points");
       
       box.appendChild(placement);
       box.appendChild(name);
       box.appendChild(points);
-      box.appendChild(pointsPerBingo);
       
       leaderboardDiv.appendChild(box);
     });
