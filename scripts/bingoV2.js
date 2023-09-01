@@ -485,3 +485,25 @@ function clearBets() {
     socket.send(msg);
     console.log('Nachricht an den Server gesendet:', msg);
 }
+
+var mega = 0;
+var zwinker = 0;
+const megaText = document.getElementById("megaCounter");
+const zwinkerText = document.getElementById("zwinkerCounter");
+
+function megaCounter() {
+    mega++;
+    megaText.innerText = mega;
+}
+
+function zwinkerCounter() {
+    zwinker++;
+    zwinkerText.innerText = zwinker;
+}
+
+function reset() {
+    mega = 0;
+    zwinker = 0;
+    megaText.innerText = 0;
+    zwinkerText.innerText = 0;
+}

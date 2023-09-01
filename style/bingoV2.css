@@ -48,6 +48,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    padding: 100px;
 }
 
 #bingoBets {
@@ -127,24 +128,8 @@ textarea {
     }
 }
 
-button {
-    background-color: #007FFF;
-    color: #FFFFFF;
-    font-size: 24px;
-    border: none;
-    padding: 10px 20px;
-    margin-left: 50px;
-    margin-right: 50px;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
 button:hover {
     background-color: #0055AA;
-}
-
-.controlButton {
-    padding: 20px;
 }
 
 input[type=number] {
@@ -176,29 +161,60 @@ input[type=number]::placeholder {
     background-color: #8f001f !important;
 }
 
-/* GEHT NICHT ICH HASSE CSS UltraMad */
-/* CSS-Styling für das Diagramm-Canvas */
-#myChart {
-    border: 5px solid #999999;
+.input-row {
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    display: flex;
+}
+
+.counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #8f001f;
+    font-size: xx-large;
+    color: whitesmoke;
+    width: 80px;
+    height: 50px;
+    text-align: center;
+    background: radial-gradient(ellipse at top left, var(--dark-red) 87%, transparent 88%), var(--orange);
+    background-size: 100% 100%, auto;
+    background-repeat: no-repeat;
+    border-radius: 0 0 10px 0;
     border-radius: 5px;
-    background-color: #000000;
 }
-  
-/* Stil für die Diagrammbalken */
-.bar {
-    background-color: rgba(0, 123, 255, 0.7);
-    transition: height 0.5s;
-}
-  
-/* Stil für die Achsen */
-.chartjs-chart {
-    background-color: #f9f9f9;
-}
-  
-/* Stil für Beschriftungen */
-.chartjs-chart .axis-label {
-    font-family: 'Signika', sans-serif;
-    font-size: 12px;
+
+.controlButton {
+    background-color: #007FFF;
     color: #FFFFFF;
+    font-size: 24px;
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-right: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-color: #114060;
+    border-width: 3px;
+}
+
+.randomButton {
+    background-color: #007FFF;
+    color: #FFFFFF;
+    font-size: 24px;
+    padding: 10px 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-color: #114060;
+    border-width: 3px;
 }
   

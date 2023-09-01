@@ -12,12 +12,27 @@
 <body>
     <div id="inhalt">
         <div id="bingoControl">
-            <button class="controlButton" onclick="startVoting()">Start Voting</button>
-            <button class="controlButton" onclick="clearBets()">Clear Votes</button>
+            <div class="input-row">
+                <button class="controlButton" onclick="startVoting()">Start Voting</button>
+                <button class="controlButton" onclick="clearBets()">Clear Votes</button>
+            </div>
             <div class="input-row">
                 <button class="controlButton" onclick="stopBingo()">Wette auflösen</button>
                 <input type="number" id="numOfBingos" placeholder="0">
             </div>
+            <div class="input-row">
+                <button class="controlButton" onclick="megaCounter()">MEGA</button>
+                <div class="counter">
+                    <text id="megaCounter">0</text>
+                </div>
+            </div>
+            <div class="input-row">
+                <button class="controlButton" onclick="zwinkerCounter()">Zwinker</button>
+                <div class="counter">
+                    <text id="zwinkerCounter">0</text>
+                </div>
+            </div>
+            <button class="controlButton" onclick="reset()">Reset Counters</button>
         </div>
         <div class="matrix">
             <div class="row">
@@ -70,7 +85,7 @@
                     <textarea id=""></textarea>
                 </div>
             </div>
-            <button id="startButton" onclick="startBingo()">Start Bingo</button>
+            <button id="startButton" class="randomButton" onclick="startBingo()">Start Bingo</button>
         </div>
         <div id="bingoBets">
             <canvas id="myChart" width="600" height="600"></canvas>
