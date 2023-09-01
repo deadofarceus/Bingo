@@ -494,6 +494,8 @@ const zwinkerText = document.getElementById("zwinkerCounter");
 function megaCounter() {
     mega++;
     megaText.innerText = mega;
+    const msg = id + "<megaplus";
+    socket.send(msg);
 }
 
 function zwinkerCounter() {
@@ -506,4 +508,6 @@ function reset() {
     zwinker = 0;
     megaText.innerText = 0;
     zwinkerText.innerText = 0;
+    const msg = id + "<megaclear";
+    socket.send(msg);
 }

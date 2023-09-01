@@ -23,12 +23,14 @@ function connectWebSocket() {
 
         if (message.startsWith("vote")) {
             updateChart(message.substring(4));
-            console.log('Nachricht vom Server erhalten:', message);
         } else if (message.startsWith("start")) {
             createNewChart();
             console.log('Nachricht vom Server erhalten:', message);
         } else if (message.startsWith("stopVoting")) {
             deleteChart();
+            console.log('Nachricht vom Server erhalten:', message);
+        } else if(message.startsWith("<mega")) {
+            megaCounter(message.substring(5));
             console.log('Nachricht vom Server erhalten:', message);
         } else {
             renderText(message);
@@ -43,7 +45,7 @@ function connectWebSocket() {
 connectWebSocket();
 
 function renderText(tableHtml) {
-    const texts = document.getElementsByTagName("text");
+    const texts = document.querySelectorAll('.displayText');
     const textContainers = document.querySelectorAll('.text-container');
 
     let startIndex = tableHtml.indexOf("<textbegin>");
@@ -200,4 +202,17 @@ function createNewChart() {
             }
         }
     });
+}
+
+const megaText = document.getElementById("megaCounter");
+var mega = 0;
+
+function megaCounter(clear) {
+    if (clear === "clear") {
+        megaText.innerText = 0;
+        mega = 0;
+    } else {
+        mega++;
+        megaText.innerText = mega;
+    }
 }
