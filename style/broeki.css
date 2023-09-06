@@ -1,0 +1,102 @@
+:root {
+    --dark-red: #68170B;
+    --orange: #DF3A14;
+    --mint: #C2D3C5;
+    --dark-green: #508c58;
+}
+
+body {
+    /* background-image: url("../resources/kutcherBackground.jpg"); */
+    /* background-size: cover; */
+    background-repeat: no-repeat;
+    font-family: 'Signika', sans-serif;
+}
+
+#display {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    width: 100%;
+    justify-content: center;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    width: 1150px;
+    justify-content: center;
+}
+  
+
+text {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: azure;
+    padding: 5%;
+}
+
+.text-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: radial-gradient(ellipse at top left, var(--dark-red) 87%, transparent 88%), var(--orange);
+    background-size: 100% 100%, auto;
+    background-repeat: no-repeat;
+    border-radius: 0 0 10px 0;
+
+    margin: auto;
+    border-radius: 10px;
+    height: 80px;
+    width: 120px;
+    font-size: 15px;
+}
+
+.marked {
+    animation: play-once 760ms forwards;
+}
+
+.marked text {
+    animation: play-once-text 760ms forwards;
+}
+
+@keyframes play-once-text {
+    0% {
+        color: transparent;
+    }
+    99% {
+        color: transparent;
+    }
+    100% {
+        color: #467b4d;
+    }
+}
+  
+@keyframes play-once {
+    0% {
+        background-image: url("../resources/broekihuh.gif");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    99% {
+        background-image: url("../resources/broekihuh.gif");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    100% {
+        background: radial-gradient(ellipse at top left, var(--mint) 87%, transparent 88%), var(--dark-green);
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+}
+
+#placeholder {
+    width: 370px;
+}
+
+#placeholder2 {
+    width: 400px;
+}
