@@ -154,6 +154,8 @@ function startBingo() {
             var textarea = textareas[i];
             textarea.classList.add("clickable");
             textarea.addEventListener("click", toggleBackgroundColor);
+            textarea.addEventListener("contextmenu", toggleImpossible);
+            textarea.addEventListener("contextmenu", sendMessage);
             textarea.addEventListener("click", sendMessage);
             textarea.readOnly = true;
         }
@@ -174,7 +176,21 @@ function randomizeArea(index) {
 function toggleBackgroundColor(event) {
     if (bingoStarted) {
         var textarea = event.target;
+        if (textarea.classList.contains("impossible")) {
+            textarea.classList.toggle("impossible");
+        }
         textarea.classList.toggle("marked");
+    }
+}
+
+function toggleImpossible(event) {
+    event.preventDefault();
+    if (bingoStarted) {
+        var textarea = event.target;
+        if (textarea.classList.contains("marked")) {
+            textarea.classList.toggle("marked");
+        }
+        textarea.classList.toggle("impossible");
     }
 }
 
@@ -283,10 +299,10 @@ connectWebSocket();
 function sendMessage() {
     const sendedTextareas = document.getElementsByTagName("textarea");
     sendedTextareas[0].classList
-    var tableHtml = id; // HTML-Code des Tables als String erhalten
-    tableHtml = addText(tableHtml, sendedTextareas);
-    socket.send(tableHtml);
-    // console.log('Nachricht an den Server gesendet:', tableHtml);
+    var msg = id;
+    msg = addText(msg, sendedTextareas);
+    socket.send(msg);
+    console.log('Nachricht an den Server gesendet:', msg);
 }
 
 function addText(message, sendedTextareas) {

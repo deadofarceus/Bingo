@@ -3,6 +3,8 @@
     --orange: #DF3A14;
     --mint: #C2D3C5;
     --dark-green: #508c58;
+    --blue: #298de0;
+    --dark-blue: #00058f;
 }
 
 body {
@@ -61,6 +63,16 @@ text {
 
 .marked text {
     animation: play-once-text 760ms forwards;
+}
+
+.impossible {
+    background: radial-gradient(ellipse at top left, var(--blue) 87%, transparent 88%), var(--dark-blue);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.impossible text {
+    color: #59ffd6;
 }
 
 @keyframes play-once-text {

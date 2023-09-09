@@ -10,6 +10,8 @@
     --orange: #DF3A14;
     --mint: #C2D3C5;
     --dark-green: #508c58;
+    --blue: #298de0;
+    --dark-blue: #00058f;
 }
 
 body {
@@ -94,8 +96,15 @@ textarea {
     animation: play-once 1580ms forwards;
 }
 
-.marked text {
+.marked textarea {
     animation: play-once-text 1580ms forwards;
+}
+
+.impossible {
+    background: radial-gradient(ellipse at top left, var(--blue) 87%, transparent 88%), var(--dark-blue);
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #59ffd6;
 }
 
 @keyframes play-once-text {
@@ -112,12 +121,12 @@ textarea {
   
 @keyframes play-once {
     0% {
-        background-image: url("../resources/zwinkerv2.gif");
+        background-image: url("../resources/broekihuh.gif");
         background-size: cover;
         background-repeat: no-repeat;
     }
     99% {
-        background-image: url("../resources/zwinkerv2.gif");
+        background-image: url("../resources/broekihuh.gif");
         background-size: cover;
         background-repeat: no-repeat;
     }
