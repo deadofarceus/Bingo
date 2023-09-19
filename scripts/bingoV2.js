@@ -208,7 +208,7 @@ for (var i = 0; i < textareas.length; i++) {
 }
 
 function startBingo() {
-    if(bingoStarted) {
+    if (bingoStarted) {
         location.reload();
     } else {
         speichernBingo();
@@ -224,7 +224,7 @@ function startBingo() {
             textarea.addEventListener("click", sendMessage);
             textarea.readOnly = true;
         }
-        
+
         startButton.innerHTML = "Init new Bingo";
         sendMessage();
     }
@@ -238,32 +238,70 @@ function randomizeArea(index) {
     adjustTextSize();
 }
 
+const pattern = /\d+\/\d+/;
+const numberPattern = /\d+/;
+const slashPattern = /\//;
+
 function toggleBackgroundColor(event) {
     if (bingoStarted) {
         var textarea = event.target;
-        textarea.classList.toggle("marked");
+        const oldText = textarea.value;
+        textarea.value = replaceFirstNumber(textarea.value);
+        if (oldText === textarea.value || checkNumbersEqual(textarea.value)) {
+            textarea.classList.toggle("marked");
+        }
     }
+}
+
+function checkNumbersEqual(input) {
+    const match = input.match(pattern);
+
+    if (match) {
+        const firstNumber = parseInt(input.match(numberPattern)[0], 10);
+        const secondNumber = parseInt(input.substring(input.match(slashPattern).index).match(numberPattern)[0], 10);
+
+        return firstNumber === secondNumber;
+    }
+
+    return true;
+}
+
+function replaceFirstNumber(input) {
+    const match = input.match(pattern);
+
+    if (match) {
+        const firstNumber = parseInt(input.match(numberPattern)[0], 10);
+        const secondNumber = parseInt(input.substring(input.match(slashPattern).index).match(numberPattern)[0], 10);
+
+        if (firstNumber !== secondNumber) {
+            const incrementedFirstNumber = firstNumber + 1;
+            const replacedString = input.replace(pattern, `${incrementedFirstNumber}/${secondNumber}`);
+            return replacedString;
+        }
+    }
+
+    return input;
 }
 
 function adjustTextSize() {
     for (var i = 0; i < textareas.length; i++) {
         var textarea = textareas[i];
         textarea.style.fontSize = "25px"; // Reset font size
-    
+
         var contentHeight = textarea.scrollHeight;
         var textareaHeight = textarea.clientHeight;
-        
+
         // Calculate the ratio of content height to textarea height
         var ratio = contentHeight / textareaHeight;
-        
+
         // Adjust the font size based on the ratio
         var fontSize = 25; // Initial font size
         var maxFontSize = 40; // Maximum font size
         var minFontSize = 14; // Minimum font size
-        
+
         // Calculate the new font size within the specified range
         var newFontSize = Math.max(minFontSize, Math.min(maxFontSize, fontSize / ratio));
-        
+
         textarea.style.fontSize = newFontSize + "px";
     }
 }
@@ -284,9 +322,9 @@ function speichernBingo() {
 
     // console.log("SPEICHERN  MIT      " + bingoTable);
 }
-  
+
 // Funktion zum Abrufen des gespeicherten Werts beim Laden der Seite
-window.onload = function() {
+window.onload = function () {
     var bingoTable = localStorage.getItem("Rosinbingo");
 
     if (bingoTable) {
@@ -314,18 +352,18 @@ var socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}`);
 
 function connectWebSocket() {
     socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}`);
-  
-    socket.onopen = function() {
-      console.log('WebSocket-Verbindung hergestellt.');
+
+    socket.onopen = function () {
+        console.log('WebSocket-Verbindung hergestellt.');
     };
 
-    socket.onclose = function() {
-      console.log('WebSocket-Verbindung geschlossen. Versuche erneut zu verbinden...');
-      setTimeout(connectWebSocket, 2000); // Verbindung nach 2 Sekunden erneut aufbauen
+    socket.onclose = function () {
+        console.log('WebSocket-Verbindung geschlossen. Versuche erneut zu verbinden...');
+        setTimeout(connectWebSocket, 2000); // Verbindung nach 2 Sekunden erneut aufbauen
     };
-  
-    socket.onerror = function(error) {
-      console.error('WebSocket-Fehler aufgetreten: ', error);
+
+    socket.onerror = function (error) {
+        console.error('WebSocket-Fehler aufgetreten: ', error);
     };
 
     socket.onmessage = function (event) {
@@ -337,7 +375,7 @@ function connectWebSocket() {
             deleteChart();
             createNewChart();
         } else if (message.startsWith("stopVoting")) {
-            
+
         } else {
             // showData(JSON.parse(message)); // ARRAY in form von 
         }
@@ -358,7 +396,7 @@ function sendMessage() {
 
 function addText(message, sendedTextareas) {
     for (let index = 0; index < sendedTextareas.length; index++) {
-        message = message + "<textbegin><" + sendedTextareas[index].classList +">"
+        message = message + "<textbegin><" + sendedTextareas[index].classList + ">"
         message = message + sendedTextareas[index].value;
     }
     message = message + "<textbegin>"
@@ -371,7 +409,7 @@ var myChart;
 
 function updateChart(vote) {
     var labelIndex = myChart.data.labels.indexOf(vote);
-    
+
     if (labelIndex !== -1) {
         myChart.data.datasets[0].data[labelIndex]++;
         myChart.update();
