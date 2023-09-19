@@ -28,6 +28,16 @@ body {
     align-items: center;
 }
 
+#helpContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    width: 400px;
+}
+
 .matrix {
     display: flex;
     margin: auto;
@@ -184,6 +194,25 @@ input[type=number]::placeholder {
     background-repeat: no-repeat;
     border-radius: 0 0 10px 0;
     border-radius: 5px;
+}
+
+.helpText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #8f001f;
+    font-size: medium;
+    color: whitesmoke;
+    text-align: center;
+    background: radial-gradient(ellipse at top left, var(--dark-red) 87%, transparent 88%), var(--orange);
+    background-size: 100% 100%, auto;
+    background-repeat: no-repeat;
+    border-radius: 0 0 10px 0;
+    border-radius: 10px;
+
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 .controlButton {
