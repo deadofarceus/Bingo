@@ -173,14 +173,52 @@ function randomizeArea(index) {
     adjustTextSize();
 }
 
+const pattern = /\d+\/\d+/;
+const numberPattern = /\d+/;
+const slashPattern = /\//;
+
 function toggleBackgroundColor(event) {
     if (bingoStarted) {
         var textarea = event.target;
-        if (textarea.classList.contains("impossible")) {
-            textarea.classList.toggle("impossible");
+        const oldText = textarea.value;
+        textarea.value = replaceFirstNumber(textarea.value);
+        if (oldText === textarea.value || checkNumbersEqual(textarea.value)) {
+            if (textarea.classList.contains("impossible")) {
+                textarea.classList.toggle("impossible");
+            }
+            textarea.classList.toggle("marked");
         }
-        textarea.classList.toggle("marked");
     }
+}
+
+function checkNumbersEqual(input) {
+    const match = input.match(pattern);
+
+    if (match) {
+        const firstNumber = parseInt(input.match(numberPattern)[0], 10);
+        const secondNumber = parseInt(input.substring(input.match(slashPattern).index).match(numberPattern)[0], 10);
+
+        return firstNumber === secondNumber;
+    }
+
+    return true;
+}
+
+function replaceFirstNumber(input) {
+    const match = input.match(pattern);
+
+    if (match) {
+        const firstNumber = parseInt(input.match(numberPattern)[0], 10);
+        const secondNumber = parseInt(input.substring(input.match(slashPattern).index).match(numberPattern)[0], 10);
+
+        if (firstNumber !== secondNumber) {
+            const incrementedFirstNumber = firstNumber + 1;
+            const replacedString = input.replace(pattern, `${incrementedFirstNumber}/${secondNumber}`);
+            return replacedString;
+        }
+    }
+
+    return input;
 }
 
 function toggleImpossible(event) {
