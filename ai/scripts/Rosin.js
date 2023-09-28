@@ -280,9 +280,5 @@ function connectWebSocket() {
     };
 }
 
-function soos() {
-    frankRedetGif.style.backgroundImage = "url(\"../resources/FrankRedet.gif\")";
-}
-
 // Initialer Verbindungsaufbau
 connectWebSocket();
