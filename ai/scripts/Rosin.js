@@ -199,11 +199,12 @@ const lebensWeisheiten = [
 var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const id = params.get('id');
+const frankRedetGif = document.getElementById('frankDiv');
 
-const randomVoiceSettings = {
-    similarity_boost: 0.5,  // Ändere die Similarity Boost (beachte den zulässigen Bereich)
-    stability: 0.7,  // Ändere die Stability (beachte den zulässigen Bereich)
-    style: 1,  // Ändere den Style (beachte den zulässigen Bereich)
+const rosinVoiceSettings = {
+    similarity_boost: 0.02,  // Ändere die Similarity Boost (beachte den zulässigen Bereich)
+    stability: 0.95,  // Ändere die Stability (beachte den zulässigen Bereich)
+    style: 0,  // Ändere den Style (beachte den zulässigen Bereich)
     use_speaker_boost: true  // Nutze Speaker Boost (true/false)
 };
 
@@ -231,7 +232,14 @@ function connectWebSocket() {
         const randomIndex = Math.floor(Math.random() * lebensWeisheiten.length);
         const randomLebensWeisheit = lebensWeisheiten[randomIndex];
 
-        const text = data.text + randomLebensWeisheit;
+        var textToSpeech;
+        
+        if (data.text.startsWith("Danke")) {
+            textToSpeech = data.text + randomLebensWeisheit;
+        } else {
+            textToSpeech = data.text;
+        }
+
 
         console.log(message);
         const data = JSON.parse(message)
@@ -242,8 +250,8 @@ function connectWebSocket() {
         };
 
         const requestBody = JSON.stringify({
-            text: text,
-            voice_settings: randomVoiceSettings
+            text: textToSpeech,
+            voice_settings: rosinVoiceSettings
         });
 
         const response = fetch(`https://api.elevenlabs.io/v1/text-to-speech/${data.voiceID}`, {
@@ -255,14 +263,25 @@ function connectWebSocket() {
             .then(blob => {
                 const url = URL.createObjectURL(blob);
                 const audio = new Audio(url);
-                audio.play();
+
+                audio.addEventListener('play', () => {
+                    frankRedetGif.style.backgroundImage = "url(\"../resources/FrankRedet.gif\")";
+                });
 
                 audio.addEventListener('ended', () => {
+                    frankRedetGif.style.backgroundImage = "url(\"../resources/Frankstopp.png\")";
                     const msg = id + "<audioended";
                     socket.send(msg);
                 });
+
+                audio.play();
+
             });
     };
+}
+
+function soos() {
+    frankRedetGif.style.backgroundImage = "url(\"../resources/FrankRedet.gif\")";
 }
 
 // Initialer Verbindungsaufbau
