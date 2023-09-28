@@ -228,9 +228,11 @@ function connectWebSocket() {
 
     socket.onmessage = function (event) {
         const message = event.data;
+        console.log(message);
 
         const randomIndex = Math.floor(Math.random() * lebensWeisheiten.length);
         const randomLebensWeisheit = lebensWeisheiten[randomIndex];
+        const data = JSON.parse(message)
 
         var textToSpeech;
         
@@ -239,10 +241,6 @@ function connectWebSocket() {
         } else {
             textToSpeech = data.text;
         }
-
-
-        console.log(message);
-        const data = JSON.parse(message)
 
         const headers = {
             "xi-api-key": data.api_key,
