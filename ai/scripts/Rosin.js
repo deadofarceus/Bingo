@@ -249,7 +249,8 @@ function connectWebSocket() {
 
         const requestBody = JSON.stringify({
             text: textToSpeech,
-            voice_settings: rosinVoiceSettings
+            voice_settings: rosinVoiceSettings,
+            model_id: "eleven_multilingual_v2"
         });
 
         const response = fetch(`https://api.elevenlabs.io/v1/text-to-speech/${data.voiceID}`, {
