@@ -196,6 +196,19 @@ const lebensWeisheiten = [
     "Auch das schlechteste Buch hat seine gute Seite: die letzte."
 ]
 
+const influencerZitate = [
+    "Damage ist auf jeden Fall besser als Schaden auf Darius!",
+    "Ohmzerstörer ist OP! Leider gibt es das Item nicht mehr, sehr Schade.",
+    "YIIIII! STIIIIIIILLLLLL! THE MAIIIIIIIIIIIIN!",
+    "Ich habe dich bei mir aufgenommen, hier in Dorsten!",
+    "Weißt du wann mein Löwenkind Pulli ankommt?",
+    "HAST DU DEZIBEL BESTELLT, ER IST JETZT DA!",
+    "Ein Ei, 4 Zigaretten, eine Ibuprofen, dazu ein Rosinenbrötchen mit Leberwurst und dann kommt eine Kulinarische Linie ins Spiel.",
+    "Guten Morgen, das ist ja gestern nicht so gut gelaufen, aber lass dich dadurch nicht entmutigen. Dann mal alle ab an die Arbeit.",
+    "Man wendet sich nicht gegen den Rose.",
+    "Mitfahrgelegenheit gesucht? Kutcher.de führ schnelle Mitfahrgelegenheiten durch ganz Deutschland. HÜAH!",
+]
+
 var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const id = params.get('id');
@@ -230,8 +243,7 @@ function connectWebSocket() {
         const message = event.data;
         console.log(message);
 
-        const randomIndex = Math.floor(Math.random() * lebensWeisheiten.length);
-        const randomLebensWeisheit = lebensWeisheiten[randomIndex];
+        const randomLebensWeisheit = generateWisdom();
         const data = JSON.parse(message)
 
         var textToSpeech;
@@ -277,6 +289,17 @@ function connectWebSocket() {
 
             });
     };
+}
+
+function generateWisdom() {
+    var wisdomArray;
+    if (Math.random() < 0.1) {
+        wisdomArray = influencerZitate;
+    } else {
+        wisdomArray = lebensWeisheiten;
+    }
+    const randomIndex = Math.floor(Math.random() * wisdomArray.length);
+    return wisdomArray[randomIndex];
 }
 
 // Initialer Verbindungsaufbau
