@@ -293,7 +293,7 @@ function connectWebSocket() {
 
 function generateWisdom() {
     var wisdomArray;
-    if (Math.random() < 0.1) {
+    if (Math.random() < 0.05) {
         wisdomArray = influencerZitate;
     } else {
         wisdomArray = lebensWeisheiten;
