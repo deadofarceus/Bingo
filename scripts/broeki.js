@@ -4,7 +4,8 @@ const id = params.get('id');
 
 function connectWebSocket() {
     const socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}`);
-
+    socket.pingTimeout = 315360000000; // 10 years in milliseconds
+    
     socket.onopen = function () {
         console.log('WebSocket-Verbindung hergestellt.');
     };

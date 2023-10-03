@@ -423,6 +423,7 @@ var socket;
 
 function connectWebSocket() {
     socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}`);
+    socket.pingTimeout = 315360000000; // 10 years in milliseconds
 
     socket.onopen = function () {
         console.log('WebSocket-Verbindung hergestellt.');
