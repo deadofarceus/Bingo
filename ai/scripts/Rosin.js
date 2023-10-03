@@ -431,7 +431,7 @@ function connectWebSocket() {
 
     socket.onclose = function () {
         console.log('WebSocket-Verbindung geschlossen. Versuche erneut zu verbinden...');
-        setTimeout(connectWebSocket, 2000); // Verbindung nach 2 Sekunden erneut aufbauen
+        connectWebSocket(); // Verbindung nach 2 Sekunden erneut aufbauen
     };
 
     socket.onerror = function (error) {
