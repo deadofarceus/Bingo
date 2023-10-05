@@ -727,7 +727,7 @@ function generateWisdom() {
     const random = Math.random();
     if (random < 0.08) {
         wisdomArray = influencerZitate;
-    } else if (random > 0.8) {
+    } else if (random > 0.85) {
         wisdomArray = leagueWits;
     } else if (random > 0.5) {
         wisdomArray = leagueOfLegendsProblems;
