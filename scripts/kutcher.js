@@ -1,9 +1,12 @@
 var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const id = params.get('id');
+const type = params.get('type');
+console.log(id + " " + type);
 
 function connectWebSocket() {
-    const socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}`);
+    // const socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}&type=${type}`);
+    const socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}`);
     socket.pingTimeout = 315360000000; // 10 years in milliseconds
     
     socket.onopen = function () {
@@ -22,22 +25,21 @@ function connectWebSocket() {
     socket.onmessage = function (event) {
         const message = event.data;
 
-        if (message.startsWith("vote")) {
-            updateChart(message.substring(4));
-        } else if (message.startsWith("start")) {
-            createNewChart();
-            console.log('Nachricht vom Server erhalten:', message);
-        } else if (message.startsWith("stopVoting")) {
-            deleteChart();
-            console.log('Nachricht vom Server erhalten:', message);
-        } else if(message.startsWith("<mega")) {
-            megaCounter(message.substring(5));
-            console.log('Nachricht vom Server erhalten:', message);
-        } else {
-            renderText(message);
+        const modEvent = JSON.parse(message);
+
+        if (modEvent.type === "RosinBingo/vote") {
+            updateChart(""+modEvent.data.voteNumber);
+        } else if (modEvent.type === "RosinBingo/votingControl") {
+            if (modEvent.data.control === "startVoting") {
+                createNewChart();
+            } else if (modEvent.data.control === "stopVoting") {
+                deleteChart();
+            }
+        } else if (modEvent.type === "RosinBingo/bingo") {
+            console.log(modEvent.data);
+            renderText(modEvent.data.bingoCards);
             adjustTextSize();
-    
-            console.log('Nachricht vom Server erhalten:', message);
+            megaCounter(modEvent.data.mega);
         }
     };
 }
@@ -208,12 +210,7 @@ function createNewChart() {
 const megaText = document.getElementById("megaCounter");
 var mega = 0;
 
-function megaCounter(clear) {
-    if (clear === "clear") {
-        megaText.innerText = 0;
-        mega = 0;
-    } else {
-        mega++;
-        megaText.innerText = mega;
-    }
+function megaCounter(counter) {
+    mega = counter;
+    megaText.innerText = mega;
 }
