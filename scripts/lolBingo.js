@@ -322,17 +322,42 @@ window.onload = function() {
 };
 
 
+class ModEvent {
+    type;
+    data;
+    constructor(type, data) {
+        this.type = type;
+        this.data = data;
+    }
+    tostring() {
+        return JSON.stringify(this);
+    }
+}
 
+class LOLBingoEvent {
+    id;
+    channel;
+    bingoCards;
+
+    constructor(id, channel, bingoCards) {
+        this.id = id;
+        this.channel = channel;
+        this.bingoCards = bingoCards;
+    }
+}
 
 
 var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const id = params.get('id');
+const type = params.get('type');
+const channel = params.get('channel');
 
-var socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}`);
+var socket;
 
 function connectWebSocket() {
-    socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}`);
+    socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}&type=${type}&channel=${channel}`);
+    // socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}&channel=${channel}`);
     socket.pingTimeout = 315360000000; // 10 years in milliseconds
     
     socket.onopen = function() {
@@ -351,16 +376,6 @@ function connectWebSocket() {
     socket.onmessage = function (event) {
         const message = event.data;
 
-        if (message.startsWith("vote")) {
-            // updateChart(message.substring(4));
-        } else if (message.startsWith("start")) {
-            // deleteChart();
-            // createNewChart();
-        } else if (message.startsWith("stopVoting")) {
-            
-        } else {
-            // showData(JSON.parse(message)); // ARRAY in form von 
-        }
     };
 }
 
@@ -369,14 +384,15 @@ connectWebSocket();
 
 function sendMessage() {
     const sendedTextareas = document.getElementsByTagName("textarea");
-    sendedTextareas[0].classList
-    var msg = id;
-    msg = addText(msg, sendedTextareas);
-    socket.send(msg);
-    console.log('Nachricht an den Server gesendet:', msg);
+    var bingocards = addText(sendedTextareas);
+    var bingoEvent = new LOLBingoEvent(id, channel, bingocards)
+    var modEvent = new ModEvent("LolBingo/bingo", bingoEvent);
+    socket.send(JSON.stringify(modEvent));
+    console.log('Nachricht an den Server gesendet:', JSON.stringify(modEvent));
 }
 
-function addText(message, sendedTextareas) {
+function addText(sendedTextareas) {
+    var message = "";
     for (let index = 0; index < sendedTextareas.length; index++) {
         message = message + "<textbegin><" + sendedTextareas[index].classList +">"
         message = message + sendedTextareas[index].value;
