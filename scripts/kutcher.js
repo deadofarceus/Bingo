@@ -2,11 +2,11 @@ var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const id = params.get('id');
 const type = params.get('type');
-console.log(id + " " + type);
+const channel = params.get('channel');
 
 function connectWebSocket() {
-    // const socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}&type=${type}`);
-    const socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}`);
+    const socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}&type=${type}&channel=${channel}`);
+    // const socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}`);
     socket.pingTimeout = 315360000000; // 10 years in milliseconds
     
     socket.onopen = function () {

@@ -342,16 +342,54 @@ window.onload = function () {
 
 
 
+class BingoEvent {
+    id;
+    channel;
+    bingoCards;
+    mega;
+    constructor(id, channel, bingoCards, mega) {
+        this.id = id;
+        this.channel = channel;
+        this.bingoCards = bingoCards;
+        this.mega = mega;
+    }
+}
 
+class ModEvent {
+    type;
+    data;
+    constructor(type, data) {
+        this.type = type;
+        this.data = data;
+    }
+    tostring() {
+        return JSON.stringify(this);
+    }
+}
+
+class VotingControlEvent {
+    id;
+    channel;
+    control;
+    constructor(id, channel, control) {
+        this.id = id;
+        this.channel = channel;
+        this.control = control;
+    }
+}
 
 var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const id = params.get('id');
+const type = params.get('type');
+const channel = params.get('channel');
 
-var socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}`);
+var socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}&type=${type}&channel=${channel}`);
+// var socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}&channel=${channel}`);
 
 function connectWebSocket() {
-    socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}`);
+var socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}&type=${type}&channel=${channel}`);
+    // socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}&channel=${channel}`);
     socket.pingTimeout = 315360000000; // 10 years in milliseconds
     
     socket.onopen = function () {
@@ -369,16 +407,17 @@ function connectWebSocket() {
 
     socket.onmessage = function (event) {
         const message = event.data;
+        console.log(message);
 
-        if (message.startsWith("vote")) {
-            updateChart(message.substring(4));
-        } else if (message.startsWith("start")) {
-            deleteChart();
-            createNewChart();
-        } else if (message.startsWith("stopVoting")) {
+        const modEvent = JSON.parse(message);
 
-        } else {
-            // showData(JSON.parse(message)); // ARRAY in form von 
+        if (modEvent.type === "RosinBingo/vote") {
+            updateChart(""+modEvent.data.voteNumber);
+        } else if (modEvent.type === "RosinBingo/votingControl") {
+            if (modEvent.data.control === "startVoting") {
+                deleteChart();
+                createNewChart();
+            }
         }
     };
 }
@@ -388,14 +427,15 @@ connectWebSocket();
 
 function sendMessage() {
     const sendedTextareas = document.getElementsByTagName("textarea");
-    sendedTextareas[0].classList
-    var tableHtml = id; // HTML-Code des Tables als String erhalten
-    tableHtml = addText(tableHtml, sendedTextareas);
-    socket.send(tableHtml);
-    // console.log('Nachricht an den Server gesendet:', tableHtml);
+    var bingocards = addText(sendedTextareas);
+    var bingoEvent = new BingoEvent(id, channel, bingocards, mega);
+    var modEvent = new ModEvent("RosinBingo/bingo", bingoEvent);
+    socket.send(JSON.stringify(modEvent));
+    console.log('Nachricht an den Server gesendet:', JSON.stringify(modEvent));
 }
 
-function addText(message, sendedTextareas) {
+function addText(sendedTextareas) {
+    var message = "";
     for (let index = 0; index < sendedTextareas.length; index++) {
         message = message + "<textbegin><" + sendedTextareas[index].classList + ">"
         message = message + sendedTextareas[index].value;
@@ -499,22 +539,25 @@ function createNewChart() {
 }
 
 function startVoting() {
-    const msg = id + "<startBingo";
-    socket.send(msg);
-    console.log('Nachricht an den Server gesendet:', msg);
+    const votingControlEvent = new VotingControlEvent(id, channel, "startBingo");
+    const modEvent = new ModEvent("RosinBingo/votingControl", votingControlEvent);
+    socket.send(JSON.stringify(modEvent));
+    console.log('Nachricht an den Server gesendet:', JSON.stringify(modEvent));
 }
 
 function stopBingo() {
     const bingos = document.getElementById('numOfBingos').value;
-    const msg = id + "<!stopBingo " + bingos;
-    socket.send(msg);
-    console.log('Nachricht an den Server gesendet:', msg);
+    const votingControlEvent = new VotingControlEvent(id, channel, "!stopBingo " + bingos);
+    const modEvent = new ModEvent("RosinBingo/votingControl", votingControlEvent);
+    socket.send(JSON.stringify(modEvent));
+    console.log('Nachricht an den Server gesendet:', JSON.stringify(modEvent));
 }
 
 function clearBets() {
-    const msg = id + "<clearBets";
-    socket.send(msg);
-    console.log('Nachricht an den Server gesendet:', msg);
+    const votingControlEvent = new VotingControlEvent(id, channel, "clearBets");
+    const modEvent = new ModEvent("RosinBingo/votingControl", votingControlEvent);
+    socket.send(JSON.stringify(modEvent));
+    console.log('Nachricht an den Server gesendet:', JSON.stringify(modEvent));
 }
 
 var mega = 0;
@@ -525,8 +568,7 @@ const zwinkerText = document.getElementById("zwinkerCounter");
 function megaCounter() {
     mega++;
     megaText.innerText = mega;
-    const msg = id + "<megaplus";
-    socket.send(msg);
+    sendMessage();
 }
 
 function zwinkerCounter() {
@@ -539,6 +581,5 @@ function reset() {
     zwinker = 0;
     megaText.innerText = 0;
     zwinkerText.innerText = 0;
-    const msg = id + "<megaclear";
-    socket.send(msg);
+    sendMessage();
 }
