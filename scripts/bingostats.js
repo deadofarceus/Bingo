@@ -9,66 +9,53 @@ class User {
 
 var socket = new WebSocket(`wss://rosin-bingo.glitch.me`);
 
-function connectWebSocket() {
-    socket = new WebSocket(`wss://rosin-bingo.glitch.me`);
-  
-    socket.onopen = function() {
-      console.log('WebSocket-Verbindung hergestellt.');
-      sendMessage();
-    };
-
-    socket.onclose = function() {
-      // console.log('WebSocket-Verbindung geschlossen. Versuche erneut zu verbinden...');
-      // setTimeout(connectWebSocket, 2000); // Verbindung nach 2 Sekunden erneut aufbauen
-    };
-  
-    socket.onerror = function(error) {
-      console.error('WebSocket-Fehler aufgetreten: ', error);
-    };
-
-    socket.onmessage = function (event) {
-        const data = event.data;
-
-        showData(JSON.parse(data)); // ARRAY in form von [["deadofarceus",1]]
-
-        console.log('Nachricht vom Server erhalten:', data);
-    };
+var url = new URL(window.location.href);
+var params = new URLSearchParams(url.search);
+const channel = params.get('channel');
+async function getData() {
+  try {
+    const response = await fetch(`http://rosin-bingo.glitch.me:3000/RosinBingo/data?channel=${channel}`);
+    // const response = await fetch(`http://localhost:3000/RosinBingo/data?channel=${channel}`);
+    const data = await response.text();
+    showData(JSON.parse(data)); // ARRAY in form von [["deadofarceus",1]]
+  } catch (error) {
+    console.error('Fehler beim Abrufen der Daten:', error);
+  }
 }
 
-// Initialer Verbindungsaufbau
-connectWebSocket();
+getData();
 
 function sendMessage() {
-    socket.send("GET BINGO DATA");
-    console.log('Request sent');
+  socket.send("GET BINGO DATA");
+  console.log('Request sent');
 }
 
 function showData(correctBingos) {
-    const leaderboardDiv = document.getElementById("leaderboard");
+  const leaderboardDiv = document.getElementById("leaderboard");
 
-    // Sortiere die Daten nach Punkten (absteigend)
-    correctBingos.sort((a, b) => b[1].points - a[1].points);
+  // Sortiere die Daten nach Punkten (absteigend)
+  correctBingos.sort((a, b) => b[1].points - a[1].points);
 
-    correctBingos.forEach((person, index) => {
-      const box = document.createElement("div");
-      box.classList.add("box");
-      
-      const placement = document.createElement("p");
-      placement.textContent = `${index + 1}`;
-      placement.classList.add("placement");
-    
-      const name = document.createElement("p");
-      name.textContent = person[0];
-      name.classList.add("name");
-      
-      const points = document.createElement("p");
-      points.textContent = `${person[1].points} Punkte`;
-      points.classList.add("points");
-      
-      box.appendChild(placement);
-      box.appendChild(name);
-      box.appendChild(points);
-      
-      leaderboardDiv.appendChild(box);
-    });
+  correctBingos.forEach((person, index) => {
+    const box = document.createElement("div");
+    box.classList.add("box");
+
+    const placement = document.createElement("p");
+    placement.textContent = `${index + 1}`;
+    placement.classList.add("placement");
+
+    const name = document.createElement("p");
+    name.textContent = person[0];
+    name.classList.add("name");
+
+    const points = document.createElement("p");
+    points.textContent = `${person[1].points} Punkte`;
+    points.classList.add("points");
+
+    box.appendChild(placement);
+    box.appendChild(name);
+    box.appendChild(points);
+
+    leaderboardDiv.appendChild(box);
+  });
 }
