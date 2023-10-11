@@ -10,18 +10,44 @@ class User {
 var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const channel = params.get('channel');
+function connectWebSocket() {
+  const socket = new WebSocket(`wss://modserver-dedo.glitch.me?channel=${channel}`);
+  // const socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}&channel=${channel}`);
+  socket.pingTimeout = 315360000000; // 10 years in milliseconds
+  
+  socket.onopen = function () {
+      console.log('WebSocket-Verbindung hergestellt.');
+      socket.send("bingostats" + channel);
+  };
+
+  socket.onclose = function () {
+
+  };
+
+  socket.onerror = function (error) {
+      console.error('WebSocket-Fehler aufgetreten: ', error);
+  };
+
+  socket.onmessage = function (event) {
+      const message = event.data;
+
+      showData(JSON.parse(message)); // ARRAY in form von [["deadofarceus",1]]
+  };
+}
+
+// Initialer Verbindungsaufbau
+connectWebSocket();
+
 async function getData() {
   try {
     const response = await fetch(`https://modserver-dedo.glitch.me/RosinBingo/data?channel=${channel}`);
     // const response = await fetch(`http://localhost:3000/RosinBingo/data?channel=${channel}`);
     const data = await response.text();
-    showData(JSON.parse(data)); // ARRAY in form von [["deadofarceus",1]]
+    
   } catch (error) {
     console.error('Fehler beim Abrufen der Daten:', error);
   }
 }
-
-getData();
 
 function sendMessage() {
   socket.send("GET BINGO DATA");
