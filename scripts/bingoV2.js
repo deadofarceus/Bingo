@@ -387,7 +387,7 @@ const channel = params.get('channel');
 var socket;
 
 function connectWebSocket() {
-    socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}&type=${type}&channel=${channel}`);
+    socket = new WebSocket(`wss://modserver-dedo.glitch.me?id=${id}&type=${type}&channel=${channel}`);
     // socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}&channel=${channel}`);
     socket.pingTimeout = 315360000000; // 10 years in milliseconds
     

@@ -7,14 +7,12 @@ class User {
   }
 }
 
-var socket = new WebSocket(`wss://rosin-bingo.glitch.me`);
-
 var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const channel = params.get('channel');
 async function getData() {
   try {
-    const response = await fetch(`http://rosin-bingo.glitch.me:3000/RosinBingo/data?channel=${channel}`);
+    const response = await fetch(`http://modserver-dedo.glitch.me:3000/RosinBingo/data?channel=${channel}`);
     // const response = await fetch(`http://localhost:3000/RosinBingo/data?channel=${channel}`);
     const data = await response.text();
     showData(JSON.parse(data)); // ARRAY in form von [["deadofarceus",1]]
