@@ -12,7 +12,7 @@ var params = new URLSearchParams(url.search);
 const channel = params.get('channel');
 async function getData() {
   try {
-    const response = await fetch(`http://modserver-dedo.glitch.me:3000/RosinBingo/data?channel=${channel}`);
+    const response = await fetch(`https://modserver-dedo.glitch.me:3000/RosinBingo/data?channel=${channel}`);
     // const response = await fetch(`http://localhost:3000/RosinBingo/data?channel=${channel}`);
     const data = await response.text();
     showData(JSON.parse(data)); // ARRAY in form von [["deadofarceus",1]]
