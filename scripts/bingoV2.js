@@ -384,11 +384,10 @@ const id = params.get('id');
 const type = params.get('type');
 const channel = params.get('channel');
 
-var socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}&type=${type}&channel=${channel}`);
-// var socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}&channel=${channel}`);
+var socket;
 
 function connectWebSocket() {
-var socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}&type=${type}&channel=${channel}`);
+    socket = new WebSocket(`wss://rosin-bingo.glitch.me?id=${id}&type=${type}&channel=${channel}`);
     // socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}&channel=${channel}`);
     socket.pingTimeout = 315360000000; // 10 years in milliseconds
     

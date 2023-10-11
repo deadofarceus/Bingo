@@ -40,7 +40,7 @@ function connectWebSocket() {
             renderText(message);
             adjustTextSize();
 
-            console.log('Nachricht vom Server erhalten:', message);
+            // console.log('Nachricht vom Server erhalten:', message);
         }
     };
 }

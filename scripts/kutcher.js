@@ -28,7 +28,7 @@ function connectWebSocket() {
         const modEvent = JSON.parse(message);
 
         if (modEvent.type === "RosinBingo/vote") {
-            updateChart(""+modEvent.data.voteNumber);
+            updateChart("" + modEvent.data.voteNumber);
         } else if (modEvent.type === "RosinBingo/votingControl") {
             if (modEvent.data.control === "startVoting") {
                 createNewChart();
@@ -36,7 +36,6 @@ function connectWebSocket() {
                 deleteChart();
             }
         } else if (modEvent.type === "RosinBingo/bingo") {
-            console.log(modEvent.data);
             renderText(modEvent.data.bingoCards);
             adjustTextSize();
             megaCounter(modEvent.data.mega);
