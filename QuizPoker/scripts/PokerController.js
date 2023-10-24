@@ -139,7 +139,6 @@ function createPlayerElement(name, amZug, points, betting, bet) {
     playerRow.appendChild(playerDiv);
 }
 
-createPlayerElement("soos", true, 1000, true, 50);
 
 var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
@@ -239,26 +238,35 @@ function sendChanges() {
     }
 
     const newGameState = new GameState(gameID, players, playersTurn, currentGameState.question, currentGameState.smallBlind, currentGameState.bigBlind);
-    const quizEvent = new QuizEvent(gameID, "quit", newGameState, undefined);
+    const quizEvent = new QuizEvent(gameID, "newGameState", newGameState, undefined);
     const modEvent = new ModEvent("quiz", quizEvent);
     socket.send(JSON.stringify(modEvent));
-    socket.send();
 }
 
-function startTimer(duration) { //in milliseconds TODO backend Fehlt
-    
+function startTimer(duration) { //in milliseconds
+    const quizEvent = new QuizEvent(gameID, "timer", undefined, new Player(undefined, duration, undefined, undefined));
+    const modEvent = new ModEvent("quiz", quizEvent);
+    socket.send(JSON.stringify(modEvent));
 }
 
 function nextQuestion() {
-    
+    const quizEvent = new QuizEvent(gameID, "question", undefined, undefined);
+    const modEvent = new ModEvent("quiz", quizEvent);
+    socket.send(JSON.stringify(modEvent));
 }
 
 function sendWin() {
-    
+    const player = getPlayerWithMaxBet(currentGameState.players);
+    const quizEvent = new QuizEvent(gameID, "win", undefined, player);
+    const modEvent = new ModEvent("quiz", quizEvent);
+    socket.send(JSON.stringify(modEvent));
 }
 
 function sendLose() {
-    
+    const player = getPlayerWithMaxBet(currentGameState.players);
+    const quizEvent = new QuizEvent(gameID, "lose", undefined, undefined);
+    const modEvent = new ModEvent("quiz", quizEvent);
+    socket.send(JSON.stringify(modEvent));
 }
 
 function loadGameState() {
@@ -312,7 +320,7 @@ function clearQuestion() {
 
 function clearChallenge() {
     const challenge = document.getElementById("challengeText");
-    challenge.textContent = ""
+    challenge.textContent = "";
 }
 
 function checkAllPlayersSameBet(players) {
@@ -350,3 +358,4 @@ function getPlayerWithMaxBet(players) {
 }
 
 connectWebSocket();
+// createPlayerElement("soos", true, 1000, true, 50);
