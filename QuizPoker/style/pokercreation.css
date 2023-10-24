@@ -1,0 +1,56 @@
+:root {
+    --bg-color: #1F1F1F;
+    --container-color: #313131;
+    --accent-color: #57B3D9;
+    --text-color: #FFFFFF;
+    --textfieldborder-color: #006927;
+    --textfield-color: #00bd16;
+    --placeholder-color: #A6A6A6;
+    --dark-red: #68170B;
+    --orange: #DF3A14;
+    --mint: #C2D3C5;
+    --dark-green: #508c58;
+}
+
+body {
+    text-align: center;
+    font-family: 'Signika', sans-serif;
+    background: #606c88;
+    background: -webkit-radial-gradient(circle, #606c88 0%, #3f4c6b 100%);
+    background: radial-gradient(circle, #606c88 0%, #3f4c6b 100%);
+}
+
+h1 {
+    font-size: 90px;
+    margin-bottom: 20px;
+    color: var(--mint);
+}
+
+div {
+    margin: 10px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 28px;
+    color: var(--mint);
+}
+
+input {
+    width: 200px;
+    padding: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #0074d9;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+}
+
+button:hover {
+    background-color: #0056a2;
+}

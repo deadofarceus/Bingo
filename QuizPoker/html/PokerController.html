@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PokerController</title>
+    <link rel="stylesheet" type="text/css" href="../style/PokerController.css">
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Erste Reihe mit 6 Spalten -->
+    <div class="row" id="PlayerRow">
+    </div>
+
+    <button id="SendChanges" onclick="sendChanges()">Send Changes</button>
+
+    <div class="otherControls">
+        <!-- Reihe von Buttons mit Timer-Überschrift und Zeiten -->
+        <div class="timer">
+            <h2>Timer</h2>
+            <div class="timer-buttons">
+                <button onclick="startTimer(120000)">2 min</button>
+                <button onclick="startTimer(60000)">1 min</button>
+                <button onclick="startTimer(30000)">30 sec</button>
+                <button onclick="startTimer(15000)">15 sec</button>
+                <button onclick="startTimer(10000)">10 sec</button>
+            </div>
+        </div>
+
+
+        <!-- Einzelne Buttons -->
+        <div class="column">
+            <button onclick="nextQuestion()">Next Question</button>
+            <button onclick="sendWin()">Send Win</button>
+            <button onclick="sendLose()">Send Lose</button>
+            <button onclick="quitGame()">quitGame</button>
+        </div>
+
+        <!-- Question with tips -->
+        <div class="question">
+            <h2>Question</h2>
+            <h3 id="questionLabel">Länder mit k</h3>
+            <p class="tip" id="questionTip1">14</p>
+            <p class="tip" id="questionTip2">Europa</p>
+            <p class="tip" id="questionTip3">Japan</p>
+        </div>
+
+        <!-- Challenge-Div mit Beispieltext -->
+        <div class="challenge">
+            <h2>Challenge</h2>
+            <text>Lorem ipsum dolor sit amet, <br>
+                consectetur adipiscing elit.</text>
+        </div>
+    </div>
+
+    <script src="../scripts/PokerController.js"></script>
+</body>
+
+</html>

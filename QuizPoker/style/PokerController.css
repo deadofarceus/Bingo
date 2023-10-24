@@ -1,0 +1,133 @@
+:root {
+    --bg-color: #1F1F1F;
+    --container-color: #313131;
+    --accent-color: #57B3D9;
+    --text-color: #FFFFFF;
+    --textfieldborder-color: #006927;
+    --textfield-color: #00bd16;
+    --placeholder-color: #A6A6A6;
+    --dark-red: #68170B;
+    --orange: #DF3A14;
+    --mint: #C2D3C5;
+    --dark-green: #508c58;
+}
+
+body {
+    text-align: center;
+    font-family: 'Signika', sans-serif;
+    background: #606c88;
+    background: -webkit-radial-gradient(circle, #606c88 0%, #3f4c6b 100%);
+    background: radial-gradient(circle, #606c88 0%, #3f4c6b 100%);
+}
+
+.row {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 10px 0;
+}
+
+.column {
+    width: min-content;
+    text-align: center;
+    background: radial-gradient(ellipse at top left, var(--dark-red) 77%, transparent 78%), var(--orange);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+label {
+    display: block;
+    margin-top: 5px;
+    font-size: 30px;
+    color: var(--mint);
+}
+
+input {
+    width: min-content;
+    margin: 5px;
+    font-size: large;
+}
+
+.timer-buttons {
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: var(--textfield-color);
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: var(--textfieldborder-color);
+}
+
+.challenge {
+    width: min-content;
+    margin: 20px 0;
+    padding: 10px;
+    background: radial-gradient(ellipse at top left, var(--dark-red) 77%, transparent 78%), var(--orange);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.question {
+    width: min-content;
+    margin: 20px 0;
+    padding: 10px;
+    background: radial-gradient(ellipse at top left, var(--dark-red) 77%, transparent 78%), var(--orange);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timer {
+    width: min-content;
+    margin: 20px 0;
+    padding: 10px;
+    background: radial-gradient(ellipse at top left, var(--dark-red) 77%, transparent 78%), var(--orange);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.otherControls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px;
+    align-content: center;
+    justify-content: space-evenly;
+}
+
+text {
+    color: #ffffff; 
+}
+
+h2 {
+    font-size: 50px;
+    color: var(--mint);
+    margin: 10px;
+}
+
+h3 {
+    font-size: 32px;
+    color: var(--mint);
+    margin: 5px;
+}
+
+.tip {
+    width: min-content;
+    margin: 5px;
+    padding: 10px;
+    font-size: 24px;
+    color: azure;
+    background: radial-gradient(ellipse at top left, var(--mint) 87%, transparent 88%), var(--dark-green);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+}
