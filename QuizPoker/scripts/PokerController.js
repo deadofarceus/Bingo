@@ -75,7 +75,7 @@ class QuizEvent {
     }
 }
 
-function createPlayerElement(name, isChecked, points) {
+function createPlayerElement(name, amZug, points, betting, bet) {
     // Erstellen eines neuen Div-Elements mit der Klasse "column"
     const playerDiv = document.createElement('div');
     playerDiv.classList.add('column');
@@ -100,26 +100,53 @@ function createPlayerElement(name, isChecked, points) {
     const zugCheckbox = document.createElement('input');
     zugCheckbox.setAttribute('type', 'checkbox');
     zugCheckbox.setAttribute('id', `zug${name}`);
-    zugCheckbox.checked = isChecked; // Setzen der Checkbox auf checked, wenn isChecked true ist
+    zugCheckbox.checked = amZug; // Setzen der Checkbox auf checked, wenn isChecked true ist
+
+    // Erstellen eines Labels für "betting"
+    const bettingLabel = document.createElement('label');
+    bettingLabel.setAttribute('for', `betting${name}`);
+    bettingLabel.textContent = 'Betting';
+
+    // Erstellen eines Checkbox-Elements
+    const bettingCheckbox = document.createElement('input');
+    bettingCheckbox.setAttribute('type', 'checkbox');
+    bettingCheckbox.setAttribute('id', `betting${name}`);
+    bettingCheckbox.checked = betting; // Setzen der Checkbox auf checked, wenn isChecked true ist
+
+    // Erstellen eines Labels für "Bet"
+    const betLabel = document.createElement('label');
+    betLabel.setAttribute('for', `bet${name}`);
+    betLabel.textContent = 'Bet';
+
+    // Erstellen eines Input-Felds für den Namen
+    const betInput = document.createElement('input');
+    betInput.setAttribute('type', 'number');
+    betInput.value = bet;
 
     // Hinzufügen der erstellten Elemente zum playerDiv
     playerDiv.appendChild(nameLabel);
     playerDiv.appendChild(pointsInput);
     playerDiv.appendChild(zugLabel);
     playerDiv.appendChild(zugCheckbox);
+    playerDiv.appendChild(bettingLabel);
+    playerDiv.appendChild(bettingCheckbox);
+    playerDiv.appendChild(betLabel);
+    playerDiv.appendChild(betInput);
+
 
     // Hinzufügen des playerDiv zum Ziel-Div mit der ID "PlayerRow"
     const playerRow = document.getElementById('PlayerRow');
     playerRow.appendChild(playerDiv);
 }
 
-createPlayerElement("soos", true, 1000);
+createPlayerElement("soos", true, 1000, true, 50);
 
 var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const gameID = params.get('gameID');
 
 var firstConnect = true;
+var currentGameState;
 var socket;
 
 function connectWebSocket() {
@@ -157,8 +184,10 @@ function connectWebSocket() {
         console.log(message);
 
         const modEvent = JSON.parse(message);
+        const quizEvent = modEvent.data;
 
-        // loadGameState();
+        currentGameState = quizEvent.gameState;
+        loadGameState();
     };
 }
 
@@ -172,13 +201,15 @@ function sendChanges() {
     const playerRow = document.getElementById('PlayerRow');
     const playerDivs = playerRow.getElementsByClassName('column');
 
+    var playersTurn;
+
     const players = [];
 
     for (let i = 0; i < playerDivs.length; i++) {
         const playerDiv = playerDivs[i];
 
         const labelElements = playerDiv.querySelectorAll('label');
-        const inputElements = playerDiv.querySelectorALl('input');
+        const inputElements = playerDiv.querySelectorAll('input');
 
         const labelArray = Array.from(labelElements);
 
@@ -191,6 +222,8 @@ function sendChanges() {
         const zugCheckbox = inputElements[1];
         const amZug = zugCheckbox.checked;
 
+        
+
         const bettingCheckbox = inputElements[2];
         const betting = bettingCheckbox.checked;
 
@@ -198,9 +231,18 @@ function sendChanges() {
         const bet = betInput.value;
 
         const player = new Player(name, points, betting, bet);
+
+        if (amZug) {
+            playersTurn = player; //TODO wer am zug
+        }
         players.push(player);
-        console.log(`Name ${name}: Am Zug - ${amZug}: Points - ${points}`);
     }
+
+    const newGameState = new GameState(gameID, players, playersTurn, currentGameState.question, currentGameState.smallBlind, currentGameState.bigBlind);
+    const quizEvent = new QuizEvent(gameID, "quit", newGameState, undefined);
+    const modEvent = new ModEvent("quiz", quizEvent);
+    socket.send(JSON.stringify(modEvent));
+    socket.send();
 }
 
 function startTimer(duration) { //in milliseconds TODO backend Fehlt
@@ -220,7 +262,91 @@ function sendLose() {
 }
 
 function loadGameState() {
+    //Load Players
+    const playerRow = document.getElementById('PlayerRow');
+    const playerDivs = playerRow.getElementsByClassName('column');
+
+    for (let i = playerDivs.length - 1; i >= 0; i--) {
+        playerRow.removeChild(playerDivs[i]);
+    }
+
+    const players = currentGameState.players;
+    for (let i = 0; i < players.length; i++) {
+        const player = players[i];
+        var amZug = false;
+        if (currentGameState.currentPlayer.name === player.name) {
+            amZug = true;
+        }
+        createPlayerElement(player.name, amZug, player.chipCount, player.betting, player.bet);
+    }
     
+    //load Question
+    clearQuestion();
+    const question = currentGameState.question;
+    const qLabel = document.getElementById("questionLabel");
+    qLabel.textContent = question.text;
+
+    //load Question tips
+    const tips = document.getElementsByClassName("tip");
+    for (let i = 0; i < question.tips.tipsArray.length; i++) {
+        if (question.tips.showTipArray[i]) {
+            tips[i].textContent = question.tips.tipsArray[i];
+        }
+    }
+    
+    //load Challenge
+    clearChallenge();
+    if (checkAllPlayersSameBet(players)) {
+        //show Challenges or whatever TODO
+        const playerWhoHasToDoChallenge = getPlayerWithMaxBet(players);
+        console.log(playerWhoHasToDoChallenge);
+    }
+}
+
+function clearQuestion() {
+    const tips = document.getElementsByClassName("tip");
+    for (let i = 0; i < tips.length; i++) {
+        tips[0].textContent = "";
+    }
+}
+
+function clearChallenge() {
+    const challenge = document.getElementById("challengeText");
+    challenge.textContent = ""
+}
+
+function checkAllPlayersSameBet(players) {
+    const bettingPlayers = players.filter(player => player.betting === true);
+
+    let maxBetPlayer = bettingPlayers[0];
+
+    for (let i = 1; i < bettingPlayers.length; i++) {
+        const currentPlayer = bettingPlayers[i];
+
+        if (currentPlayer.bet !== maxBetPlayer.bet) {
+            return false;
+        }
+    }
+
+    // Wenn alle Spieler denselben bet-Wert haben und betting auf true gesetzt haben, geben Sie true zurück
+    return true;
+}
+
+function getPlayerWithMaxBet(players) {
+    const bettingPlayers = players.filter(player => player.betting === true);
+
+    let maxBetPlayer = bettingPlayers[0];
+
+    for (let i = 1; i < bettingPlayers.length; i++) {
+        const currentPlayer = bettingPlayers[i];
+
+        if (currentPlayer.bet > maxBetPlayer.bet ||
+            (currentPlayer.bet === maxBetPlayer.bet && currentPlayer.chipCount < maxBetPlayer.chipCount)) {
+            maxBetPlayer = currentPlayer;
+        }
+    }
+
+    return maxBetPlayer;
 }
 
 connectWebSocket();
