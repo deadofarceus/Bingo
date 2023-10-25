@@ -359,5 +359,11 @@ function getPlayerWithMaxBet(players) {
     return maxBetPlayer;
 }
 
+function startRound() {
+    //send all betting true
+    //mit button bei den zwei anderen 
+    // newGameState einfach
+}
+
 connectWebSocket();
 // createPlayerElement("soos", true, 1000, true, 50);

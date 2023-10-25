@@ -97,7 +97,7 @@ function connectWebSocket() {
         if (firstConnect) {
             firstConnect = false;
 
-            var quizEvent = new QuizEvent(gameID, "join", undefined, new Player(playerName, 20000, true, 0, 0));
+            var quizEvent = new QuizEvent(gameID, "join", undefined, new Player(playerName, 20000, false, 0, 0));
             var modEvent = new ModEvent("quiz", quizEvent);
             socket.send(JSON.stringify(modEvent));
         }
@@ -125,6 +125,10 @@ function connectWebSocket() {
                 console.log(quizEvent);
                 currentGameState = quizEvent.gameState;
                 loadGameState();
+                break;
+        
+            case "timer":
+                // send input data  delete input show text
                 break;
         
             default:
@@ -249,6 +253,17 @@ function loadGameState() {
     clearQuestion();
     loadQuestion();
     
+    if (isFirstRound()) {    
+        showCardsInput();
+    }
+}
+
+function showCards() {
+    //delete Input show text
+}
+
+function showCardsInput() {
+    //delete text show Input
 }
 
 function clearQuestion() {
@@ -327,6 +342,15 @@ function raiseBet() {
         var modEvent = new ModEvent("quiz", quizEvent);
         socket.send(JSON.stringify(modEvent));
     }
+}
+
+function isFirstRound() {
+    for (let i = 0; i < currentGameState.players.length; i++) {
+        if (currentGameState.players[i].bet !== 0) {
+            return false;
+        }
+    }
+    return !currentGameState.question.tips.showTipArray[0];
 }
 
 
