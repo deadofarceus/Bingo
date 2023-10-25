@@ -3,11 +3,13 @@ class Player {
     chipCount;
     betting;
     bet;
-    constructor(name, chipCount, betting, bet) {
+    cards;
+    constructor(name, chipCount, betting, bet, cards) {
         this.name = name;
         this.chipCount = chipCount;
         this.betting = betting;
         this.bet = bet;
+        this.cards = cards;
     }
 }
 
