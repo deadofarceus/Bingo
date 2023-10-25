@@ -13,81 +13,42 @@
         <div class="pokertable">
             <!-- Reihe 1 -->
             <div class="row">
-                <div class="playerBox">
-                    <div class="playerInfo">
-                        <div class="playerLabel"><p class="otherInfo">Name</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Points:<br>10000</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Bet:<br>400</p></div>
-                    </div>
-                </div>
-                <div class="playerBox">
-                    <div class="playerInfo">
-                        <div class="playerLabel"><p class="otherInfo">Name</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Points:<br>10000</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Bet:<br>400</p></div>
-                    </div>
-                </div>
-                <div class="playerBox">
-                    <div class="playerInfo">
-                        <div class="playerLabel"><p class="otherInfo">Name</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Points:<br>10000</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Bet:<br>400</p></div>
-                    </div>
-                </div>
+                <div class="placeholder" id="player4"></div>
+                <div class="placeholder" id="player1"></div>
+                <div class="placeholder" id="player5"></div>
             </div>
             <!-- Reihe 2 -->
             <div class="row">
-                <div class="playerBox">
-                    <div class="playerInfo">
-                        <div class="playerLabel"><p class="otherInfo">Name</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Points:<br>10000</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Bet:<br>400</p></div>
-                    </div>
-                </div>
+                <div class="placeholder" id="player2"></div>
                 <div class="bigBox">
                 </div>
-                <div class="playerBox">
-                    <div class="playerInfo">
-                        <div class="playerLabel"><p class="otherInfo">Name</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Points:<br>10000</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Bet:<br>400</p></div>
-                    </div>
-                </div>
+                <div class="placeholder" id="player3"></div>
             </div>
             <!-- Reihe 3 -->
             <div class="row3">
-                <div class="playerBox">
-                    <div class="playerInfo">
-                        <div class="playerLabel"><p class="otherInfo">deadofarceus</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Points:<br>10000</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Bet:<br>400</p></div>
-                    </div>
-                </div>
-                <div class="playerBox">
-                    <div class="playerInfo">
-                        <div class="playerLabel"><p class="otherInfo">Name</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Points:<br>10000</p></div>
-                        <div class="playerLabel"><p class="otherInfo">Bet:<br>400</p></div>
-                    </div>
-                </div>
+                <div class="placeholder" id="player7"></div>
+                <div class="placeholder" id="player6"></div>
             </div>
         </div>
 
         <!-- Untere Reihe -->
         <div class="bottomRow">
             <div class="pointsBox">
-                <p class="myInfo">Points: 10000</p>
+                <p class="myInfo" id="mypoints">Points: 10000</p>
             </div>
             <div class="betBox">
-                <p class="myInfo">Bet: 400</p>
+                <p class="myInfo" id="mybet">Bet: 400</p>
             </div>
             <div class="buttonContainer">
-                <div class="button">Throw</div>
-                <div class="button">Call</div>
-                <div class="button">Raise</div>
+                <div class="button" id="throw">Throw</div>
+                <div class="button" id="call">Call</div>
+                <div class="button" id="raise">Raise</div>
             </div>
+            <input type="number" id="raiseAmount" value="0" maxlength="6" step="100">
         </div>
     </div>
+
+    <script src="../scripts/PokerTable.js"></script>
 </body>
 
 </html>
