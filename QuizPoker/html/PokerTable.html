@@ -21,6 +21,25 @@
             <div class="row">
                 <div class="placeholder" id="player2"></div>
                 <div class="bigBox">
+                    <div class="question">
+                        <h2>Question</h2>
+                        <h3 id="questionLabel">Länder mit k</h3>
+                        <p class="tip" id="questionTip1">14 hjfhsdfh skhfksh fshfkjsh kjfhskjdfh skdjfhkh</p>
+                        <p class="tip" id="questionTip2">Europa</p>
+                        <p class="tip" id="questionTip3">Japan</p>
+                    </div>
+                    <!-- <div class="challenge">
+                        <h2>Challenge</h2>
+                        <text id="challengeText">Lorem ipsum dolor sit amet, <br>
+                            consectetur adipiscing elit.Lorem ipsum dolor sit amet, <br>
+                            consectetur adipiscing elit.Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit.Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit.Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit.Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit.Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit.Lorem ipsum dolor sit amet, 
+                            consectetur adipiscing elit.</text>
+                    </div> -->
                 </div>
                 <div class="placeholder" id="player3"></div>
             </div>
@@ -40,9 +59,9 @@
                 <p class="myInfo" id="mybet">Bet: 400</p>
             </div>
             <div class="buttonContainer">
-                <div class="button" id="throw">Throw</div>
-                <div class="button" id="call">Call</div>
-                <div class="button" id="raise">Raise</div>
+                <div class="button" id="throw" onclick="throwCards()">Throw</div>
+                <div class="button" id="call" onclick="callBet()">Call</div>
+                <div class="button" id="raise" onclick="raiseBet()">Raise</div>
             </div>
             <input type="number" id="raiseAmount" value="0" maxlength="6" step="100">
         </div>

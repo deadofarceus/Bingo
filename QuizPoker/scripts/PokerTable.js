@@ -208,6 +208,15 @@ function loadGameState() {
     const players = currentGameState.players;
     const otherPlayers = players.filter(player => player.name !== playerName);
 
+    const playerDivs = document.getElementsByClassName("placeholder");
+
+    for (let i = 0; i < playerDivs.length; i++) {
+        const element = playerDivs[i];
+        while (element.firstChild) {
+            element.removeChild(element.firstChild);
+        }
+    }
+
     otherPlayers.forEach((player, index) => {
         var amZug = false;
         if (currentGameState.currentPlayer.name === player.name) {
@@ -223,6 +232,38 @@ function loadGameState() {
         amZug = true;
     }
     loadOwnPlayer(amZug, ownPlayer[0].chipCount, ownPlayer[0].betting, ownPlayer[0].bet);
+
+    // if (questionTime()) {
+    //     clearQuestion();
+    //     loadQuestion();
+    // } else { //challengeTime
+    //     clearChallenge();
+    //     loadChallenge();
+    // }
+    clearQuestion();
+    loadQuestion();
+    
+}
+
+function clearQuestion() {
+    const tips = document.getElementsByClassName("tip");
+    for (let i = 0; i < tips.length; i++) {
+        tips[i].textContent = "";
+    }
+}
+
+function loadQuestion() {
+    const question = currentGameState.question;
+    const qLabel = document.getElementById("questionLabel");
+    qLabel.textContent = question.text;
+
+    //load Question tips
+    const tips = document.getElementsByClassName("tip");
+    for (let i = 0; i < question.tips.tipsArray.length; i++) {
+        if (question.tips.showTipArray[i]) {
+            tips[i].textContent = question.tips.tipsArray[i];
+        }
+    }
 }
 
 function getHighestBetPlayer(players) {
@@ -241,7 +282,44 @@ function getHighestBetPlayer(players) {
     return maxBetPlayer;
 }
 
-// 
+function throwCards() {
+    const ownPlayer = currentGameState.currentPlayer;
+    if (ownPlayer.name === playerName) {
+        var quizEvent = new QuizEvent(gameID, "playerAction", undefined, new Player(playerName, ownPlayer.chipCount, false, ownPlayer.bet));
+        var modEvent = new ModEvent("quiz", quizEvent);
+        socket.send(JSON.stringify(modEvent));
+    }
+}
+
+function callBet() {
+    const ownPlayer = currentGameState.currentPlayer;
+    if (ownPlayer.name === playerName) {
+        const newBet = getHighestBetPlayer(currentGameState.players);
+        const newPoints = ownPlayer.chipCount - (newBet - ownPlayer.bet);
+        var quizEvent = new QuizEvent(gameID, "playerAction", undefined, new Player(playerName, newPoints, true, newBet));
+        var modEvent = new ModEvent("quiz", quizEvent);
+        socket.send(JSON.stringify(modEvent));
+    }
+}
+
+function raiseBet() {
+    const ownPlayer = currentGameState.currentPlayer;
+    const raiseAmount = document.getElementById("raiseAmount").textContent;
+    const regex = /^[1-9]\d*$/;
+
+    if (ownPlayer.name === playerName && regex.test(raiseAmount) && parseInt(raiseAmount, 10) < ownPlayer.chipCount) {
+
+        const newBet = ownPlayer.bet + parseInt(raiseAmount, 10);
+        const newPoints = ownPlayer.chipCount - parseInt(raiseAmount, 10);
+
+        var quizEvent = new QuizEvent(gameID, "playerAction", undefined, new Player(playerName, newPoints, true, newBet));
+        var modEvent = new ModEvent("quiz", quizEvent);
+        socket.send(JSON.stringify(modEvent));
+    }
+}
+
+
+// connectWebSocket();
 // createPlayerInfoBox("name2", false, 1000, true, 50, 2)
 // createPlayerInfoBox("name3", false, 1000, true, 50, 3)
 // createPlayerInfoBox("name4", false, 1000, false, 0, 4)

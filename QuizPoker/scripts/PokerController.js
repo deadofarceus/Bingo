@@ -256,15 +256,15 @@ function nextQuestion() {
 }
 
 function sendWin() {
-    const player = getPlayerWithMaxBet(currentGameState.players);
+    const player = getPlayerWithMaxBet(currentGameState.players);//TODO FEHLER DA MUSS CHALLENGE BET HIN DAS FEHLT WEEWOO
     const quizEvent = new QuizEvent(gameID, "win", undefined, player);
     const modEvent = new ModEvent("quiz", quizEvent);
     socket.send(JSON.stringify(modEvent));
 }
 
 function sendLose() {
-    const player = getPlayerWithMaxBet(currentGameState.players);
-    const quizEvent = new QuizEvent(gameID, "lose", undefined, undefined);
+    const player = getPlayerWithMaxBet(currentGameState.players); //TODO FEHLER DA MUSS CHALLENGE BET HIN DAS FEHLT WEEWOO
+    const quizEvent = new QuizEvent(gameID, "lose", undefined, player);
     const modEvent = new ModEvent("quiz", quizEvent);
     socket.send(JSON.stringify(modEvent));
 }
@@ -314,7 +314,7 @@ function loadGameState() {
 function clearQuestion() {
     const tips = document.getElementsByClassName("tip");
     for (let i = 0; i < tips.length; i++) {
-        tips[0].textContent = "";
+        tips[i].textContent = "";
     }
 }
 
