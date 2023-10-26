@@ -136,7 +136,9 @@ function createPlayerElement(name, amZug, points, betting, bet, cards) {
     playerDiv.appendChild(betInput);
 
     if (cards > -1) {
-        playerDiv.style.border = "border: 3px solid green;";
+        playerDiv.style.border = "3px solid green;";
+    } else {
+        playerDiv.style.border = "3px solid var(--dark-red);";
     }
 
 
@@ -186,13 +188,31 @@ function connectWebSocket() {
 
     socket.onmessage = function (event) {
         const message = event.data;
-        console.log(message);
 
         const modEvent = JSON.parse(message);
         const quizEvent = modEvent.data;
 
-        currentGameState = quizEvent.gameState;
-        loadGameState();
+
+        switch (quizEvent.eventType) {
+            case "newGameState":
+                console.log(quizEvent);
+                currentGameState = quizEvent.gameState;
+                loadGameState();
+                break;
+
+            case "timer":
+                // setTimeout(sendCards, quizEvent.player.bet);
+                break;
+
+            case "winner":
+                window.location.href = `../html/PokerWinner.html?gameID=${gameID}&controller=1&winner=${quizEvent.player.name}`;
+                break;
+
+            default:
+                console.log("OTHER");
+                console.log(quizEvent);
+                break;
+        }
     };
 }
 

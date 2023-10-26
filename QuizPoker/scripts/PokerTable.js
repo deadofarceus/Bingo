@@ -127,8 +127,11 @@ function connectWebSocket() {
                 break;
 
             case "timer":
-                // send input data  delete input show text
                 setTimeout(sendCards, quizEvent.player.bet);
+                break;
+
+            case "winner":
+                window.location.href = `../html/PokerWinner.html?gameID=${gameID}&controller=0&name=${playerName}&winner=${quizEvent.player.name}`;
                 break;
 
             default:

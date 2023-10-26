@@ -1,0 +1,78 @@
+:root {
+    --bg-color: #1F1F1F;
+    --container-color: #313131;
+    --accent-color: #57B3D9;
+    --text-color: #FFFFFF;
+    --textfieldborder-color: #006927;
+    --textfield-color: #00bd16;
+    --placeholder-color: #A6A6A6;
+    --dark-red: #68170B;
+    --orange: #DF3A14;
+    --mint: #C2D3C5;
+    --dark-green: #508c58;
+}
+
+body {
+    text-align: center;
+    font-family: 'Signika', sans-serif;
+    background: #2E7D32;
+    background: radial-gradient(circle, #2E7D32 0%, #0f3811 100%);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: space-evenly;
+}
+
+.main {
+    margin-top: 250px;
+    width: 60%;
+    background-color: #114211; 
+    position: relative;
+    border: 10px solid #723305; /* Dunkelbraune Holzgrenze */
+    border-radius: 500px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8); /* Hinzufügen von Schatten für den Holzeffekt */
+    background-size: cover;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: space-evenly;
+}
+
+h1 {
+    font-size: 100px;
+    color: var(--mint);
+    margin: 10px;
+}
+
+h2 {
+    font-size: 80px;
+    color: var(--orange);
+    margin: 10px;
+}
+
+button {
+    font-size: xx-large;
+    padding: 10px 20px;
+    margin: 10px;
+    color: azure;
+    
+    cursor: pointer;
+    border-radius: 5px;
+    border: 3px solid #000000;
+
+    background-color: var(--orange);
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #96280f;
+}
+
+button:active {
+    background-color: #5a180a; 
+    transition: background-color 0s; /* Um die Transition beim Klicken zu deaktivieren */
+}
