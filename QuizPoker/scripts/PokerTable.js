@@ -115,7 +115,6 @@ function connectWebSocket() {
 
     socket.onmessage = function (event) {
         const message = event.data;
-        console.log(message);
 
         const modEvent = JSON.parse(message);
         const quizEvent = modEvent.data;
@@ -126,11 +125,12 @@ function connectWebSocket() {
                 currentGameState = quizEvent.gameState;
                 loadGameState();
                 break;
-        
+
             case "timer":
                 // send input data  delete input show text
+                setTimeout(sendCards, quizEvent.player.bet);
                 break;
-        
+
             default:
                 console.log("OTHER");
                 console.log(quizEvent);
@@ -140,6 +140,18 @@ function connectWebSocket() {
 }
 
 
+async function sendCards() {
+    const cardsInput = document.getElementById("cardsInput");
+    const cards = cardsInput.value;
+    showCards(cards);
+
+    const ownPlayer = currentGameState.currentPlayer;
+    ownPlayer.cards = cards;
+
+    var quizEvent = new QuizEvent(gameID, "playerAction", undefined, ownPlayer);
+    var modEvent = new ModEvent("quiz", quizEvent);
+    socket.send(JSON.stringify(modEvent));
+}
 
 function createPlayerInfoBox(name, amZug, points, betting, bet, playernumber) {
     // Erstelle das äußere Container-Element
@@ -149,8 +161,8 @@ function createPlayerInfoBox(name, amZug, points, betting, bet, playernumber) {
     // Erstelle die inneren Label-Elemente
     const labels = [
         { label: name },
-        { label: "Points: " + points},
-        { label: "Bet: " + bet}
+        { label: "Points: " + points },
+        { label: "Bet: " + bet }
     ];
 
     labels.forEach(labelData => {
@@ -165,7 +177,7 @@ function createPlayerInfoBox(name, amZug, points, betting, bet, playernumber) {
         playerInfoBox.appendChild(playerLabel);
     });
 
-    
+
 
     // Finde das Zielt-Element (playerBox mit der ID "player" + playernumber)
     const targetElement = document.getElementById("player" + playernumber);
@@ -194,7 +206,7 @@ function loadOwnPlayer(amZug, points, betting, bet) {
     } else {
         bottomRow.style.borderColor = "#68170B";
     }
-    
+
     if (!betting) {
         bottomRow.style.borderColor = "grey";
     }
@@ -252,18 +264,33 @@ function loadGameState() {
     // }
     clearQuestion();
     loadQuestion();
-    
-    if (isFirstRound()) {    
+
+    if (isFirstRound()) {
         showCardsInput();
     }
 }
 
-function showCards() {
-    //delete Input show text
+function showCards(cards) {
+    const cardsP = document.createElement('p');
+    cardsP.setAttribute('id', 'cardsText');
+    cardsP.textContent = cards;
+
+    const cardsInputDiv = document.getElementById("cardsInputDiv");
+    cardsInputDiv.removeChild(cardsInputDiv.firstChild);
+
+    cardsInputDiv.appendChild(cardsP);
 }
 
 function showCardsInput() {
-    //delete text show Input
+    const cardsInput = document.createElement('input');
+    cardsInput.setAttribute('type', 'checkbox');
+    cardsInput.setAttribute('id', 'cardsInput');
+    cardsInput.setAttribute('value', '0');
+
+    const cardsInputDiv = document.getElementById("cardsInputDiv");
+    cardsInputDiv.removeChild(cardsInputDiv.firstChild);
+
+    cardsInputDiv.appendChild(cardsInput);
 }
 
 function clearQuestion() {
@@ -329,8 +356,8 @@ function raiseBet() {
     const regex = /^[+]?\d+([.]\d+)?$/;
 
     const highestBet = getHighestBetPlayer(currentGameState.players).bet;
-    if (ownPlayer.name === playerName 
-        && regex.test(raiseAmount) 
+    if (ownPlayer.name === playerName
+        && regex.test(raiseAmount)
         && parseInt(raiseAmount, 10) + ownPlayer.bet < ownPlayer.chipCount + 1
         && parseInt(raiseAmount, 10) + ownPlayer.bet > highestBet
         && ownPlayer.betting) {

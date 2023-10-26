@@ -77,7 +77,7 @@ class QuizEvent {
     }
 }
 
-function createPlayerElement(name, amZug, points, betting, bet) {
+function createPlayerElement(name, amZug, points, betting, bet, cards) {
     // Erstellen eines neuen Div-Elements mit der Klasse "column"
     const playerDiv = document.createElement('div');
     playerDiv.classList.add('column');
@@ -135,6 +135,10 @@ function createPlayerElement(name, amZug, points, betting, bet) {
     playerDiv.appendChild(betLabel);
     playerDiv.appendChild(betInput);
 
+    if (cards > -1) {
+        playerDiv.style.border = "border: 3px solid green;";
+    }
+
 
     // Hinzufügen des playerDiv zum Ziel-Div mit der ID "PlayerRow"
     const playerRow = document.getElementById('PlayerRow');
@@ -147,7 +151,7 @@ var params = new URLSearchParams(url.search);
 const gameID = params.get('gameID');
 
 var firstConnect = true;
-var currentGameState;
+var currentGameState = new GameState(undefined, undefined, undefined, undefined, undefined, undefined);
 var socket;
 
 function connectWebSocket() {
@@ -223,7 +227,7 @@ function sendChanges() {
         const zugCheckbox = inputElements[1];
         const amZug = zugCheckbox.checked;
 
-        
+
 
         const bettingCheckbox = inputElements[2];
         const betting = bettingCheckbox.checked;
@@ -246,7 +250,7 @@ function sendChanges() {
 }
 
 function startTimer(duration) { //in milliseconds
-    const quizEvent = new QuizEvent(gameID, "timer", undefined, new Player(undefined, duration, undefined, undefined));
+    const quizEvent = new QuizEvent(gameID, "timer", undefined, new Player(undefined, undefined, undefined, duration, undefined));
     const modEvent = new ModEvent("quiz", quizEvent);
     socket.send(JSON.stringify(modEvent));
 }
@@ -287,9 +291,9 @@ function loadGameState() {
         if (currentGameState.currentPlayer.name === player.name) {
             amZug = true;
         }
-        createPlayerElement(player.name, amZug, player.chipCount, player.betting, player.bet);
+        createPlayerElement(player.name, amZug, player.chipCount, player.betting, player.bet, player.cards);
     }
-    
+
     //load Question
     clearQuestion();
     const question = currentGameState.question;
@@ -303,7 +307,7 @@ function loadGameState() {
             tips[i].textContent = question.tips.tipsArray[i];
         }
     }
-    
+
     //load Challenge
     clearChallenge();
     if (checkAllPlayersSameBet(players)) {
@@ -360,9 +364,28 @@ function getPlayerWithMaxBet(players) {
 }
 
 function startRound() {
-    //send all betting true
-    //mit button bei den zwei anderen 
-    // newGameState einfach
+    if (isFirstRound()) {
+        currentGameState.players.forEach(player => {
+            if (player.chipCount > 0) {
+                player.betting = true;
+            } else {
+                player.betting = false;
+            }
+        });
+
+        const quizEvent = new QuizEvent(gameID, "newGameState", currentGameState, undefined);
+        const modEvent = new ModEvent("quiz", quizEvent);
+        socket.send(JSON.stringify(modEvent));
+    }
+}
+
+function isFirstRound() {
+    for (let i = 0; i < currentGameState.players.length; i++) {
+        if (currentGameState.players[i].bet !== 0) {
+            return false;
+        }
+    }
+    return !currentGameState.question.tips.showTipArray[0];
 }
 
 connectWebSocket();
