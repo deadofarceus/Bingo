@@ -270,7 +270,8 @@ h3 {
     position: fixed;
     bottom: 0;
     right: 0;
-    padding: 80px;
+    padding-right: 80px;
+    padding-bottom: 80px;
 }
 
 #cardsText {
@@ -278,7 +279,7 @@ h3 {
     font-weight: bold;
     font-family: 'Signika', sans-serif;
     width: 160px;
-    border: 3px solid var(--dark-red);
+    border: 6px solid var(--dark-red);
     border-radius: 12px;
     color: #34863f;
     background: radial-gradient(ellipse at top left, var(--mint) 87%, transparent 88%), var(--dark-green);

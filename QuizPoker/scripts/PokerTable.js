@@ -148,12 +148,21 @@ async function sendCards() {
     const cards = cardsInput.value;
     showCards(cards);
 
-    const ownPlayer = currentGameState.currentPlayer;
+    const ownPlayer = getMyPlayer(currentGameState.players);
     ownPlayer.cards = cards;
 
-    var quizEvent = new QuizEvent(gameID, "playerAction", undefined, ownPlayer);
+    var quizEvent = new QuizEvent(gameID, "cards", undefined, ownPlayer);
     var modEvent = new ModEvent("quiz", quizEvent);
     socket.send(JSON.stringify(modEvent));
+}
+
+function getMyPlayer(players) {
+    for (let index = 0; index < players.length; index++) {
+        const element = players[index];
+        if (element.name === playerName) {
+            return element;
+        }
+    }
 }
 
 function createPlayerInfoBox(name, amZug, points, betting, bet, playernumber) {
@@ -221,11 +230,15 @@ function loadOwnPlayer(amZug, points, betting, bet) {
     mybet.textContent = "Bet: " + bet;
 
     const callButton = document.getElementById("call");
-    const highestBettingPlayer = getHighestBetPlayer(currentGameState.players).bet;
+    const highestBettingPlayer = getHighestBetPlayer(currentGameState.players);
+    console.log(highestBettingPlayer);
+    console.log(bet);
+
     if (bet === highestBettingPlayer.bet) { //call to check if bet = highest bet 
         callButton.textContent = "Check";
     } else {
-        callButton.textContent = "Call: " + (highestBettingPlayer - bet);
+        const callBet = highestBettingPlayer.bet - bet;
+        callButton.textContent = "Call: " + callBet;
     }
 }
 
@@ -244,7 +257,7 @@ function loadGameState() {
 
     otherPlayers.forEach((player, index) => {
         var amZug = false;
-        if (currentGameState.currentPlayer.name === player.name) {
+        if (currentGameState.currentPlayer === player.name) {
             amZug = true;
         }
         createPlayerInfoBox(player.name, amZug, player.chipCount, player.betting, player.bet, index + 1);
@@ -253,7 +266,7 @@ function loadGameState() {
     const ownPlayer = players.filter(player => player.name === playerName);
 
     var amZug = false;
-    if (currentGameState.currentPlayer.name === ownPlayer[0].name) {
+    if (currentGameState.currentPlayer === ownPlayer[0].name) {
         amZug = true;
     }
     loadOwnPlayer(amZug, ownPlayer[0].chipCount, ownPlayer[0].betting, ownPlayer[0].bet);
@@ -268,7 +281,7 @@ function loadGameState() {
     clearQuestion();
     loadQuestion();
 
-    if (isFirstRound()) {
+    if (isFirstRound() && document.getElementById("cardsInput") === undefined) {
         showCardsInput();
     }
 }
@@ -279,19 +292,27 @@ function showCards(cards) {
     cardsP.textContent = cards;
 
     const cardsInputDiv = document.getElementById("cardsInputDiv");
-    cardsInputDiv.removeChild(cardsInputDiv.firstChild);
+    const inputElement = document.getElementById("cardsInput");
+
+    if (inputElement && inputElement.parentNode === cardsInputDiv) {
+        cardsInputDiv.removeChild(inputElement);
+    }
 
     cardsInputDiv.appendChild(cardsP);
 }
 
 function showCardsInput() {
     const cardsInput = document.createElement('input');
-    cardsInput.setAttribute('type', 'checkbox');
+    cardsInput.setAttribute('type', 'number');
     cardsInput.setAttribute('id', 'cardsInput');
     cardsInput.setAttribute('value', '0');
 
     const cardsInputDiv = document.getElementById("cardsInputDiv");
-    cardsInputDiv.removeChild(cardsInputDiv.firstChild);
+    const inputElement = document.getElementById("cardsText");
+
+    if (inputElement && inputElement.parentNode === cardsInputDiv) {
+        cardsInputDiv.removeChild(inputElement);
+    }
 
     cardsInputDiv.appendChild(cardsInput);
 }
@@ -320,6 +341,11 @@ function loadQuestion() {
 function getHighestBetPlayer(players) {
     const bettingPlayers = players.filter(player => player.betting === true);
 
+    //for starting round nobody bets
+    if (bettingPlayers.length === 0) {
+        return new Player(undefined, undefined, undefined, 0, undefined);
+    }
+
     let maxBetPlayer = bettingPlayers[0];
 
     for (let i = 1; i < bettingPlayers.length; i++) {
@@ -333,28 +359,40 @@ function getHighestBetPlayer(players) {
     return maxBetPlayer;
 }
 
+function getPlayerByID(id) {
+    for (let i = 0; i < currentGameState.players.length; i++) {
+        if (currentGameState.players[i].name === id) {
+            return currentGameState.players[i];
+        }
+    }
+}
+
 function throwCards() {
-    const ownPlayer = currentGameState.currentPlayer;
+    const ownPlayer = getPlayerByID(currentGameState.currentPlayer);
     if (ownPlayer.name === playerName && ownPlayer.betting) {
-        var quizEvent = new QuizEvent(gameID, "playerAction", undefined, new Player(playerName, ownPlayer.chipCount, false, ownPlayer.bet, ownPlayer.cards));
+        var quizEvent = new QuizEvent(gameID, "playerAction", undefined,
+            new Player(playerName, ownPlayer.chipCount, false, ownPlayer.bet, ownPlayer.cards));
+
         var modEvent = new ModEvent("quiz", quizEvent);
         socket.send(JSON.stringify(modEvent));
     }
 }
 
 function callBet() {
-    const ownPlayer = currentGameState.currentPlayer;
+    const ownPlayer = getPlayerByID(currentGameState.currentPlayer);
     if (ownPlayer.name === playerName && ownPlayer.betting) {
         const newBet = getHighestBetPlayer(currentGameState.players).bet;
         const newPoints = ownPlayer.chipCount - (newBet - ownPlayer.bet);
-        var quizEvent = new QuizEvent(gameID, "playerAction", undefined, new Player(playerName, newPoints, true, newBet, ownPlayer.cards));
+        var quizEvent = new QuizEvent(gameID, "playerAction", undefined,
+            new Player(playerName, newPoints, true, newBet, ownPlayer.cards));
+
         var modEvent = new ModEvent("quiz", quizEvent);
         socket.send(JSON.stringify(modEvent));
     }
 }
 
 function raiseBet() {
-    const ownPlayer = currentGameState.currentPlayer;
+    const ownPlayer = getPlayerByID(currentGameState.currentPlayer);
     const raiseAmount = document.getElementById("raiseAmount").value;
     const regex = /^[+]?\d+([.]\d+)?$/;
 
@@ -368,7 +406,9 @@ function raiseBet() {
         const newBet = ownPlayer.bet + parseInt(raiseAmount, 10);
         const newPoints = ownPlayer.chipCount - parseInt(raiseAmount, 10);
 
-        var quizEvent = new QuizEvent(gameID, "playerAction", undefined, new Player(playerName, newPoints, true, newBet, ownPlayer.cards));
+        var quizEvent = new QuizEvent(gameID, "playerAction", undefined, 
+            new Player(playerName, newPoints, true, newBet, ownPlayer.cards));
+
         var modEvent = new ModEvent("quiz", quizEvent);
         socket.send(JSON.stringify(modEvent));
     }

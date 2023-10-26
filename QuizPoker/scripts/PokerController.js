@@ -201,7 +201,7 @@ function connectWebSocket() {
                 break;
 
             case "timer":
-                // setTimeout(sendCards, quizEvent.player.bet);
+                // setTimeout(sendCards, quizEvent.player.bet); TODO
                 break;
 
             case "winner":
@@ -308,7 +308,7 @@ function loadGameState() {
     for (let i = 0; i < players.length; i++) {
         const player = players[i];
         var amZug = false;
-        if (currentGameState.currentPlayer.name === player.name) {
+        if (currentGameState.currentPlayer === player.name) {
             amZug = true;
         }
         createPlayerElement(player.name, amZug, player.chipCount, player.betting, player.bet, player.cards);
