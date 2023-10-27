@@ -125,6 +125,12 @@ function connectWebSocket() {
                 currentGameState = quizEvent.gameState;
                 loadGameState();
                 break;
+            case "question":
+                console.log(quizEvent);
+                currentGameState = quizEvent.gameState;
+                loadGameState();
+                showCardsInput();
+                break;
 
             case "timer":
                 setTimeout(sendCards, quizEvent.player.bet);
@@ -189,8 +195,6 @@ function createPlayerInfoBox(name, amZug, points, betting, bet, playernumber) {
         playerInfoBox.appendChild(playerLabel);
     });
 
-
-
     // Finde das Zielt-Element (playerBox mit der ID "player" + playernumber)
     const targetElement = document.getElementById("player" + playernumber);
 
@@ -231,8 +235,6 @@ function loadOwnPlayer(amZug, points, betting, bet) {
 
     const callButton = document.getElementById("call");
     const highestBettingPlayer = getHighestBetPlayer(currentGameState.players);
-    console.log(highestBettingPlayer);
-    console.log(bet);
 
     if (bet === highestBettingPlayer.bet) { //call to check if bet = highest bet 
         callButton.textContent = "Check";
@@ -271,6 +273,14 @@ function loadGameState() {
     }
     loadOwnPlayer(amZug, ownPlayer[0].chipCount, ownPlayer[0].betting, ownPlayer[0].bet);
 
+    loadPot(players);
+
+    if (challengeNow()) {
+        loadChallengePlayer(players);
+    } else {
+        const challengeText = document.getElementById("challengeInfo");
+        challengeText.innerHTML = "";
+    }
     // if (questionTime()) {
     //     clearQuestion();
     //     loadQuestion();
@@ -280,10 +290,35 @@ function loadGameState() {
     // }
     clearQuestion();
     loadQuestion();
+}
 
-    if (isFirstRound() && document.getElementById("cardsInput") === undefined) {
-        showCardsInput();
+function loadPot(players) {
+    var pot = 0;
+    for (let index = 0; index < players.length; index++) {
+        const element = players[index];
+        pot += element.bet;
     }
+    const potText = document.getElementById("potInfo");
+    potText.textContent = "Pot: " + pot;
+}
+
+function loadChallengePlayer(players) {
+
+    const bettingPlayers = players.filter(player => player.betting === true);
+
+    let maxBetPlayer = bettingPlayers[0];
+
+    for (let i = 1; i < bettingPlayers.length; i++) {
+        const currentPlayer = bettingPlayers[i];
+
+        if (currentPlayer.bet > maxBetPlayer.bet ||
+            (currentPlayer.bet === maxBetPlayer.bet && currentPlayer.chipCount < maxBetPlayer.chipCount)) {
+            maxBetPlayer = currentPlayer;
+        }
+    }
+
+    const challengeText = document.getElementById("challengeInfo");
+    challengeText.innerHTML = maxBetPlayer.name + "<br>" + maxBetPlayer.cards;
 }
 
 function showCards(cards) {
@@ -369,7 +404,7 @@ function getPlayerByID(id) {
 
 function throwCards() {
     const ownPlayer = getPlayerByID(currentGameState.currentPlayer);
-    if (ownPlayer.name === playerName && ownPlayer.betting) {
+    if (ownPlayer.name === playerName && ownPlayer.betting && !challengeNow()) {
         var quizEvent = new QuizEvent(gameID, "playerAction", undefined,
             new Player(playerName, ownPlayer.chipCount, false, ownPlayer.bet, ownPlayer.cards));
 
@@ -380,7 +415,7 @@ function throwCards() {
 
 function callBet() {
     const ownPlayer = getPlayerByID(currentGameState.currentPlayer);
-    if (ownPlayer.name === playerName && ownPlayer.betting) {
+    if (ownPlayer.name === playerName && ownPlayer.betting && !challengeNow()) {
         const newBet = getHighestBetPlayer(currentGameState.players).bet;
         const newPoints = ownPlayer.chipCount - (newBet - ownPlayer.bet);
         var quizEvent = new QuizEvent(gameID, "playerAction", undefined,
@@ -401,12 +436,13 @@ function raiseBet() {
         && regex.test(raiseAmount)
         && parseInt(raiseAmount, 10) + ownPlayer.bet < ownPlayer.chipCount + 1
         && parseInt(raiseAmount, 10) + ownPlayer.bet > highestBet
-        && ownPlayer.betting) {
+        && ownPlayer.betting
+        && !challengeNow()) {
 
         const newBet = ownPlayer.bet + parseInt(raiseAmount, 10);
         const newPoints = ownPlayer.chipCount - parseInt(raiseAmount, 10);
 
-        var quizEvent = new QuizEvent(gameID, "playerAction", undefined, 
+        var quizEvent = new QuizEvent(gameID, "playerAction", undefined,
             new Player(playerName, newPoints, true, newBet, ownPlayer.cards));
 
         var modEvent = new ModEvent("quiz", quizEvent);
@@ -414,13 +450,9 @@ function raiseBet() {
     }
 }
 
-function isFirstRound() {
-    for (let i = 0; i < currentGameState.players.length; i++) {
-        if (currentGameState.players[i].bet !== 0) {
-            return false;
-        }
-    }
-    return !currentGameState.question.tips.showTipArray[0];
+function challengeNow() {
+    let numBetting = currentGameState.players.filter(player => player.betting).length;
+    return numBetting == 1;
 }
 
 

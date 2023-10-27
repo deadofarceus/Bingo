@@ -135,10 +135,11 @@ function createPlayerElement(name, amZug, points, betting, bet, cards) {
     playerDiv.appendChild(betLabel);
     playerDiv.appendChild(betInput);
 
-    if (cards > -1) {
-        playerDiv.style.border = "3px solid green;";
+    if (cards > 0) {
+        playerDiv.style.border = "3px solid green";
+
     } else {
-        playerDiv.style.border = "3px solid var(--dark-red);";
+        playerDiv.style.border = "3px solid var(--dark-red)";
     }
 
 
@@ -195,6 +196,11 @@ function connectWebSocket() {
 
         switch (quizEvent.eventType) {
             case "newGameState":
+                console.log(quizEvent);
+                currentGameState = quizEvent.gameState;
+                loadGameState();
+                break;
+            case "question":
                 console.log(quizEvent);
                 currentGameState = quizEvent.gameState;
                 loadGameState();
@@ -282,14 +288,14 @@ function nextQuestion() {
 }
 
 function sendWin() {
-    const player = getPlayerWithMaxBet(currentGameState.players);//TODO FEHLER DA MUSS CHALLENGE BET HIN DAS FEHLT WEEWOO
+    const player = getChallengePlayer(currentGameState.players);
     const quizEvent = new QuizEvent(gameID, "win", undefined, player);
     const modEvent = new ModEvent("quiz", quizEvent);
     socket.send(JSON.stringify(modEvent));
 }
 
 function sendLose() {
-    const player = getPlayerWithMaxBet(currentGameState.players); //TODO FEHLER DA MUSS CHALLENGE BET HIN DAS FEHLT WEEWOO
+    const player = getChallengePlayer(currentGameState.players);
     const quizEvent = new QuizEvent(gameID, "lose", undefined, player);
     const modEvent = new ModEvent("quiz", quizEvent);
     socket.send(JSON.stringify(modEvent));
@@ -332,7 +338,7 @@ function loadGameState() {
     clearChallenge();
     if (checkAllPlayersSameBet(players)) {
         //show Challenges or whatever TODO
-        const playerWhoHasToDoChallenge = getPlayerWithMaxBet(players);
+        const playerWhoHasToDoChallenge = getChallengePlayer(players);
         console.log(playerWhoHasToDoChallenge);
     }
 }
@@ -366,7 +372,7 @@ function checkAllPlayersSameBet(players) {
     return true;
 }
 
-function getPlayerWithMaxBet(players) {
+function getChallengePlayer(players) {
     const bettingPlayers = players.filter(player => player.betting === true);
 
     let maxBetPlayer = bettingPlayers[0];
