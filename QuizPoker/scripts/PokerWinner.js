@@ -9,7 +9,7 @@ const winnerText = document.getElementById("winner");
 winnerText.textContent = winner;
 
 function playAgain() {
-    if (controller === "0") {
+    if (controller === "1") {
         window.location.href = `../html/PokerController.html?gameID=${gameID}`;
     } else {
         window.location.href = `../html/PokerTable.html?gameID=${gameID}%name=${playerName}`;

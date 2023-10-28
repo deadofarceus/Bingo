@@ -133,7 +133,7 @@ function connectWebSocket() {
                 break;
 
             case "timer":
-                startTimer(quizEvent.player.bet);
+                showTimer(quizEvent.player.bet);
                 break;
 
             case "winner":
@@ -417,11 +417,11 @@ function getPlayerByID(id) {
 
 function throwCards() {
     const ownPlayer = getPlayerByID(currentGameState.currentPlayer);
-    if (ownPlayer.name === playerName 
-        && ownPlayer.betting 
+    if (ownPlayer.name === playerName
+        && ownPlayer.betting
         && !challengeNow()
-        && !(playerName === currentGameState.smallBlind && ownPlayer.bet < 101)
-        && !(playerName === currentGameState.bigBlind && ownPlayer.bet < 201)) {
+        && !(playerName === currentGameState.smallBlind && ownPlayer.bet < 100)
+        && !(playerName === currentGameState.bigBlind && ownPlayer.bet < 200)) {
         var quizEvent = new QuizEvent(gameID, "playerAction", undefined,
             new Player(playerName, ownPlayer.chipCount, false, ownPlayer.bet, ownPlayer.cards));
 
@@ -432,48 +432,58 @@ function throwCards() {
 
 function callBet() {
     const ownPlayer = getPlayerByID(currentGameState.currentPlayer);
-    if (ownPlayer.name === playerName 
-        && ownPlayer.betting 
+    if (ownPlayer.name === playerName
+        && ownPlayer.betting
         && !challengeNow()
-        && !(playerName === currentGameState.smallBlind && ownPlayer.bet < 101)
-        && !(playerName === currentGameState.bigBlind && ownPlayer.bet < 201)) {
+        && !(playerName === currentGameState.smallBlind && ownPlayer.bet < 100)
+        && !(playerName === currentGameState.bigBlind && ownPlayer.bet < 200)) {
         const newBet = getHighestBetPlayer(currentGameState.players).bet;
         const newPoints = ownPlayer.chipCount - (newBet - ownPlayer.bet);
-        var quizEvent = new QuizEvent(gameID, "playerAction", undefined,
-            new Player(playerName, newPoints, true, newBet, ownPlayer.cards));
-
-        var modEvent = new ModEvent("quiz", quizEvent);
-        socket.send(JSON.stringify(modEvent));
+        
+        betAmount(newPoints, newBet, ownPlayer.cards);
     }
 }
 
 function raiseBet() {
     const ownPlayer = getPlayerByID(currentGameState.currentPlayer);
-    var raiseAmount = document.getElementById("raiseAmount").value;
-    const regex = /^[+]?\d+([.]\d+)?$/;
-
-    const highestBet = getHighestBetPlayer(currentGameState.players).bet;
     if (ownPlayer.name === playerName
-        && regex.test(raiseAmount)
-        && parseInt(raiseAmount, 10) + ownPlayer.bet < ownPlayer.chipCount + 1
-        && parseInt(raiseAmount, 10) + ownPlayer.bet > highestBet
-        && ownPlayer.betting
-        && !challengeNow()) {
+        && ownPlayer.betting) {
 
-        if (playerName === currentGameState.smallBlind && ownPlayer.bet < 101) {
-            raiseAmount == "100";
-        } else if (playerName === currentGameState.bigBlind && ownPlayer.bet < 201) {
-            raiseAmount == "200";
+        if (playerName === currentGameState.smallBlind && ownPlayer.bet < 100) {
+            const newBet = 100;
+            const newPoints = ownPlayer.chipCount - newBet;
+        
+            betAmount(newPoints, newBet, ownPlayer.cards);
+        } else if (playerName === currentGameState.bigBlind && ownPlayer.bet < 200) {
+            const newBet = 200;
+            const newPoints = ownPlayer.chipCount - newBet;
+        
+            betAmount(newPoints, newBet, ownPlayer.cards);
+        } else {
+            var raiseAmount = document.getElementById("raiseAmount").value;
+            const regex = /^[+]?\d+([.]\d+)?$/;
+        
+            const highestBet = getHighestBetPlayer(currentGameState.players).bet;
+            if (regex.test(raiseAmount)
+                && parseInt(raiseAmount, 10) < ownPlayer.chipCount + 1
+                && parseInt(raiseAmount, 10) > highestBet - ownPlayer.bet
+                && !challengeNow()) {
+        
+                const newBet = parseInt(raiseAmount, 10) + ownPlayer.bet;
+                const newPoints = ownPlayer.chipCount - parseInt(raiseAmount, 10);
+        
+                betAmount(newPoints, newBet, ownPlayer.cards);
+            }
         }
-        const newBet = ownPlayer.bet + parseInt(raiseAmount, 10);
-        const newPoints = ownPlayer.chipCount - parseInt(raiseAmount, 10);
-
-        var quizEvent = new QuizEvent(gameID, "playerAction", undefined,
-            new Player(playerName, newPoints, true, newBet, ownPlayer.cards));
-
-        var modEvent = new ModEvent("quiz", quizEvent);
-        socket.send(JSON.stringify(modEvent));
     }
+}
+
+function betAmount(newPoints, bet, cards) {
+    var quizEvent = new QuizEvent(gameID, "playerAction", undefined,
+    new Player(playerName, newPoints, true, bet, cards));
+
+    var modEvent = new ModEvent("quiz", quizEvent);
+    socket.send(JSON.stringify(modEvent));
 }
 
 function challengeNow() {
