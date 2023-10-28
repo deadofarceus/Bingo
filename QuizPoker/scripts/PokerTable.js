@@ -133,7 +133,7 @@ function connectWebSocket() {
                 break;
 
             case "timer":
-                setTimeout(sendCards, quizEvent.player.bet);
+                startTimer(quizEvent.player.bet);
                 break;
 
             case "winner":
@@ -183,13 +183,18 @@ function createPlayerInfoBox(name, amZug, points, betting, bet, playernumber) {
         { label: "Bet: " + bet }
     ];
 
-    labels.forEach(labelData => {
+    labels.forEach((labelData, index) => {
         const playerLabel = document.createElement("div");
         playerLabel.className = "playerLabel";
 
         const p = document.createElement("p");
         p.className = "otherInfo";
         p.textContent = labelData.label;
+        if (currentGameState.smallBlind === name && index === 2) {
+            p.style.border = "3px solid silver";
+        } else if (currentGameState.bigBlind === name && index === 2) {
+            p.style.border = "3px solid gold";
+        }
 
         playerLabel.appendChild(p);
         playerInfoBox.appendChild(playerLabel);
@@ -232,6 +237,14 @@ function loadOwnPlayer(amZug, points, betting, bet) {
 
     mypoints.textContent = "Points: " + points;
     mybet.textContent = "Bet: " + bet;
+
+    if (playerName === currentGameState.smallBlind) {
+        mybet.style.border = "3px solid silver";
+    } else if (playerName === currentGameState.bigBlind) {
+        mybet.style.border = "3px solid gold";
+    } else {
+        mybet.style.border = "none";
+    }
 
     const callButton = document.getElementById("call");
     const highestBettingPlayer = getHighestBetPlayer(currentGameState.players);
@@ -404,7 +417,11 @@ function getPlayerByID(id) {
 
 function throwCards() {
     const ownPlayer = getPlayerByID(currentGameState.currentPlayer);
-    if (ownPlayer.name === playerName && ownPlayer.betting && !challengeNow()) {
+    if (ownPlayer.name === playerName 
+        && ownPlayer.betting 
+        && !challengeNow()
+        && !(playerName === currentGameState.smallBlind && ownPlayer.bet < 101)
+        && !(playerName === currentGameState.bigBlind && ownPlayer.bet < 201)) {
         var quizEvent = new QuizEvent(gameID, "playerAction", undefined,
             new Player(playerName, ownPlayer.chipCount, false, ownPlayer.bet, ownPlayer.cards));
 
@@ -415,7 +432,11 @@ function throwCards() {
 
 function callBet() {
     const ownPlayer = getPlayerByID(currentGameState.currentPlayer);
-    if (ownPlayer.name === playerName && ownPlayer.betting && !challengeNow()) {
+    if (ownPlayer.name === playerName 
+        && ownPlayer.betting 
+        && !challengeNow()
+        && !(playerName === currentGameState.smallBlind && ownPlayer.bet < 101)
+        && !(playerName === currentGameState.bigBlind && ownPlayer.bet < 201)) {
         const newBet = getHighestBetPlayer(currentGameState.players).bet;
         const newPoints = ownPlayer.chipCount - (newBet - ownPlayer.bet);
         var quizEvent = new QuizEvent(gameID, "playerAction", undefined,
@@ -428,7 +449,7 @@ function callBet() {
 
 function raiseBet() {
     const ownPlayer = getPlayerByID(currentGameState.currentPlayer);
-    const raiseAmount = document.getElementById("raiseAmount").value;
+    var raiseAmount = document.getElementById("raiseAmount").value;
     const regex = /^[+]?\d+([.]\d+)?$/;
 
     const highestBet = getHighestBetPlayer(currentGameState.players).bet;
@@ -439,6 +460,11 @@ function raiseBet() {
         && ownPlayer.betting
         && !challengeNow()) {
 
+        if (playerName === currentGameState.smallBlind && ownPlayer.bet < 101) {
+            raiseAmount == "100";
+        } else if (playerName === currentGameState.bigBlind && ownPlayer.bet < 201) {
+            raiseAmount == "200";
+        }
         const newBet = ownPlayer.bet + parseInt(raiseAmount, 10);
         const newPoints = ownPlayer.chipCount - parseInt(raiseAmount, 10);
 
@@ -455,8 +481,52 @@ function challengeNow() {
     return numBetting == 1;
 }
 
+let intervalId;
+let timeRemaining = 0;
+
+function showTimer(timer) {
+    const timerP = document.createElement('p');
+    timerP.setAttribute('id', 'timerText');
+
+    const timerDiv = document.getElementById("timerDiv");
+
+    timerDiv.appendChild(timerP);
+
+    timeRemaining = timer / 1000;
+    updateTimer();
+    intervalId = setInterval(function () {
+        if (timeRemaining > 0) {
+            timeRemaining--;
+            updateTimer();
+        } else {
+            removeTimer();
+            sendCards();
+        }
+    }, 1000);
+}
+
+function updateTimer() {
+    const minutes = Math.floor(timeRemaining / 60);
+    const seconds = timeRemaining % 60;
+    const timerElement = document.getElementById("timerText");
+    timerElement.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+function removeTimer() {
+    clearInterval(intervalId);
+
+    const timerDiv = document.getElementById("timerDiv");
+    const timerP = document.getElementById("timerText");
+
+    if (timerP && timerP.parentNode === timerDiv) {
+        timerDiv.removeChild(timerP);
+    }
+
+}
 
 connectWebSocket();
+
+// showTimer(60000);
 // createPlayerInfoBox("name2", false, 1000, true, 50, 2)
 // createPlayerInfoBox("name3", false, 1000, true, 50, 3)
 // createPlayerInfoBox("name4", false, 1000, false, 0, 4)
