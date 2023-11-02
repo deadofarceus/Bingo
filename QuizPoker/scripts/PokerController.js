@@ -207,7 +207,9 @@ function connectWebSocket() {
                 break;
 
             case "timer":
-                // setTimeout(sendCards, quizEvent.player.bet); TODO
+                // setTimeout(sendCards, quizEvent.player.bet); TODO set timeout to activate button
+                const startRoundButton = document.getElementById("startRound");
+                startRoundButton.disabled = false;
                 break;
 
             case "winner":
@@ -222,13 +224,13 @@ function connectWebSocket() {
     };
 }
 
-function quitGame() {
+function quitGame() { // call whenever
     const quizEvent = new QuizEvent(gameID, "quit", undefined, undefined);
     const modEvent = new ModEvent("quiz", quizEvent);
     socket.send(JSON.stringify(modEvent));
 }
 
-function sendChanges() {
+function sendChanges() { // call whenever
     const playerRow = document.getElementById('PlayerRow');
     const playerDivs = playerRow.getElementsByClassName('column');
 
@@ -264,7 +266,7 @@ function sendChanges() {
         const player = new Player(name, points, betting, bet);
 
         if (amZug) {
-            playersTurn = player; //TODO wer am zug
+            playersTurn = player;
         }
         players.push(player);
     }
@@ -275,30 +277,59 @@ function sendChanges() {
     socket.send(JSON.stringify(modEvent));
 }
 
-function startTimer(duration) { //in milliseconds
+function startTimer(duration) { //in milliseconds and call when start question is pressed disabled when pressed
     const quizEvent = new QuizEvent(gameID, "timer", undefined, new Player(undefined, undefined, undefined, duration, undefined));
     const modEvent = new ModEvent("quiz", quizEvent);
     socket.send(JSON.stringify(modEvent));
+
+    //disable Buttons until new question
+    const timerButtons = document.getElementsByClassName("timerButtons");
+    for (let index = 0; index < timerButtons.length; index++) {
+        const element = timerButtons[index];
+        element.disabled = true;
+    }
 }
 
-function nextQuestion() {
+function nextQuestion() { // call after send winn or lose or at the beginning
     const quizEvent = new QuizEvent(gameID, "question", undefined, undefined);
     const modEvent = new ModEvent("quiz", quizEvent);
     socket.send(JSON.stringify(modEvent));
+
+    //disable own button enable startRound
+    const nextQuestionButton = document.getElementById("nextQuestion");
+    nextQuestionButton.disabled = true;
 }
 
-function sendWin() {
+function sendWin() { // call when challenge instant disabled sich selbst und lose
     const player = getChallengePlayer(currentGameState.players);
     const quizEvent = new QuizEvent(gameID, "win", undefined, player);
     const modEvent = new ModEvent("quiz", quizEvent);
     socket.send(JSON.stringify(modEvent));
+
+    //disable own buttons
+    const sendWinButton = document.getElementById("sendWin");
+    sendWinButton.disabled = true;
+    const sendLoseButton = document.getElementById("sendLose");
+    sendLoseButton.disabled = true;
+
+    const nextQuestionButton = document.getElementById("nextQuestion");
+    nextQuestionButton.disabled = false;
 }
 
-function sendLose() {
+function sendLose() { // call when challenge instant disabled sich selbst und lose
     const player = getChallengePlayer(currentGameState.players);
     const quizEvent = new QuizEvent(gameID, "lose", undefined, player);
     const modEvent = new ModEvent("quiz", quizEvent);
     socket.send(JSON.stringify(modEvent));
+
+    //disable own buttons
+    const sendWinButton = document.getElementById("sendWin");
+    sendWinButton.disabled = true;
+    const sendLoseButton = document.getElementById("sendLose");
+    sendLoseButton.disabled = true;
+
+    const nextQuestionButton = document.getElementById("nextQuestion");
+    nextQuestionButton.disabled = false;
 }
 
 function loadGameState() {
@@ -402,6 +433,10 @@ function startRound() {
         const quizEvent = new QuizEvent(gameID, "newGameState", currentGameState, undefined);
         const modEvent = new ModEvent("quiz", quizEvent);
         socket.send(JSON.stringify(modEvent));
+
+
+        const startRoundButton = document.getElementById("startRound");
+        startRoundButton.disabled = true;
     }
 }
 

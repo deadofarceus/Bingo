@@ -20,22 +20,22 @@
         <div class="timer">
             <h2>Timer</h2>
             <div class="timer-buttons">
-                <button onclick="startTimer(120000)">2 min</button>
-                <button onclick="startTimer(60000)">1 min</button>
-                <button onclick="startTimer(30000)">30 sec</button>
-                <button onclick="startTimer(15000)">15 sec</button>
-                <button onclick="startTimer(10000)">10 sec</button>
+                <button onclick="startTimer(120000)" class="timerButtons" disabled="false">2 min</button>
+                <button onclick="startTimer(60000)" class="timerButtons" disabled="false">1 min</button>
+                <button onclick="startTimer(30000)" class="timerButtons" disabled="false">30 sec</button>
+                <button onclick="startTimer(15000)" class="timerButtons" disabled="false">15 sec</button>
+                <button onclick="startTimer(10000)" class="timerButtons" disabled="false">10 sec</button>
             </div>
         </div>
 
 
         <!-- Einzelne Buttons -->
         <div class="column">
-            <button onclick="nextQuestion()">Next Question</button>
-            <button onclick="startRound()">Start Round</button>
-            <button onclick="sendWin()">Send Win</button>
-            <button onclick="sendLose()">Send Lose</button>
-            <button onclick="quitGame()">Quit Game</button>
+            <button onclick="nextQuestion()" id="nextQuestion">Next Question</button>
+            <button onclick="startRound()" id="startRound" disabled="true">Start Round</button>
+            <button onclick="sendWin()" id="sendWin" disabled="false">Send Win</button>
+            <button onclick="sendLose()" id="sendLose" disabled="false">Send Lose</button>
+            <button onclick="quitGame()" id="quitGame">Quit Game</button>
         </div>
 
         <!-- Question with tips -->
