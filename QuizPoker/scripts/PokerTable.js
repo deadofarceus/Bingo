@@ -92,6 +92,8 @@ function connectWebSocket() {
     socket = new WebSocket(`wss://modserver-dedo.glitch.me?id=${gameID}`);
     // socket = new WebSocket(`ws://localhost:8080?id=${gameID}`);
 
+    setInterval(ping, 60000);
+
     socket.onopen = function () {
         console.log('WebSocket-Verbindung hergestellt.');
         if (firstConnect) {
@@ -115,6 +117,10 @@ function connectWebSocket() {
 
     socket.onmessage = function (event) {
         const message = event.data;
+
+        if (message === "pong") {
+            return;
+        }
 
         const modEvent = JSON.parse(message);
         const quizEvent = modEvent.data;
@@ -148,6 +154,9 @@ function connectWebSocket() {
     };
 }
 
+function ping() {
+    socket.send("ping");
+}
 
 async function sendCards() {
     const cardsInput = document.getElementById("cardsInput");

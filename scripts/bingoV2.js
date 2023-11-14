@@ -389,7 +389,8 @@ var socket;
 function connectWebSocket() {
     socket = new WebSocket(`wss://modserver-dedo.glitch.me?id=${id}&type=${type}&channel=${channel}`);
     // socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}&channel=${channel}`);
-    socket.pingTimeout = 315360000000; // 10 years in milliseconds
+    
+    setInterval(ping, 60000);
     
     socket.onopen = function () {
         console.log('WebSocket-Verbindung hergestellt.');
@@ -406,7 +407,12 @@ function connectWebSocket() {
 
     socket.onmessage = function (event) {
         const message = event.data;
-        console.log(message);
+
+        if (message === "pong") {
+            return;
+        }
+
+        // console.log(message);
 
         const modEvent = JSON.parse(message);
 
@@ -419,6 +425,10 @@ function connectWebSocket() {
             }
         }
     };
+}
+
+function ping() {
+    socket.send("ping");
 }
 
 // Initialer Verbindungsaufbau
