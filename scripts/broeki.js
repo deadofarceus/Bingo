@@ -4,8 +4,10 @@ const id = params.get('id');
 const type = params.get('type');
 const channel = params.get('channel');
 
+var socket;
+
 function connectWebSocket() {
-    const socket = new WebSocket(`wss://modserver-dedo.glitch.me?id=${id}&type=${type}&channel=${channel}`);
+    socket = new WebSocket(`wss://modserver-dedo.glitch.me?id=${id}&type=${type}&channel=${channel}`);
     // const socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}&channel=${channel}`);
     
     setInterval(ping, 60000);

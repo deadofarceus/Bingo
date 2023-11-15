@@ -102,6 +102,8 @@ function connectWebSocket() {
                     socket.send(JSON.stringify(modEvent));
                 });
 
+                audio.playbackRate = 1.05;
+
                 audio.play();
 
             });
