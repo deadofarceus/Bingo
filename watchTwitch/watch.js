@@ -72,55 +72,12 @@ function ping() {
     socket.send("ping");
 }
 
-async function screenshotPlayer() {
-    // OLD CODE:
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-    const video = document.createElement("video");
-
-    try {
-        const captureStream = await navigator.mediaDevices.getDisplayMedia();
-        video.srcObject = captureStream;
-        context.drawImage(video, 0, 0, window.width, window.height);
-        document.body.appendChild(canvas);
-        // const frame = canvas.toDataURL("image/png");
-        // captureStream.getTracks().forEach(track => track.stop());
-        // window.location.href = frame;
-    } catch (err) {
-        console.error("Error: " + err);
-    }
-
-    // const iframe = document.getElementsByTagName('iframe');
-    // const screen = iframe[0]?.contentDocument?.body;
-
-    // const canvas = document.createElement("canvas");
-    // canvas.width = 1280;
-    // canvas.height = 720;
-    // canvas.getContext('2d').drawImage(iframe, 0, 0,canvas.width, canvas.height);
-    // document.body.appendChild(canvas);
-
-    // html2canvas(iframe).then(canvas => {
-    //     // var img = new Image();
-    //     // img.src = canvas.toDataURL("image/png");
-    //     // var newWindow = window.open();
-    //     // newWindow.document.write("<img src='" + img.src + "' alt='Div Screenshot'>");
-
-    //     // const base64Image = canvas.toDataURL("image/png").split(",")[1];
-    //     // requestImageVision(base64Image, "Evenso sagt: Moin wie läufts?");
-
-    //     var imageData = canvas.toDataURL("image/png");
-
-    //     var downloadLink = document.createElement('a');
-    //     downloadLink.href = imageData;
-    //     downloadLink.download = 'twitchScreenshot.png';
-
-    //     document.body.appendChild(downloadLink);
-    //     downloadLink.click();
-    //     document.body.removeChild(downloadLink);
-    // });
+// just use https://static-cdn.jtvnw.net/previews-ttv/live_user_kutcherlol-1280x720.jpg
+function screenshotPlayer() {
+    requestImageVision("Evenso sagt: *Hust Hust* Mannoman da hab ich mich wohl beim Gameplay angesteckt");
 }
 
-async function requestImageVision(base64_image, message) {
+async function requestImageVision(message) {
     try {
 
         // Hier können Sie den API-Aufruf durchführen
@@ -147,10 +104,10 @@ async function requestImageVision(base64_image, message) {
                             "text": "Auf dem Bild sieht man was Kutcher grade streamt. Nimm bei deiner Antwort bezug auf das Bild." + message
                         },
                         {
-                            "type": "image_url",
-                            "image_url": {
-                                "url": `data:image/jpeg;base64,${base64_image}`
-                            }
+                            type: "image_url",
+                            image_url: {
+                                "url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_kutcherlol-1280x720.jpg",
+                            },
                         }
                     ]
                 }
