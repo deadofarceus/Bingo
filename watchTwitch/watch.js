@@ -123,7 +123,6 @@ async function requestImageVision(message) {
 
         const result = await response.json();
         console.log(result);
-        sendAudio(response);
     } catch (error) {
         console.error("Error:", error);
     }
