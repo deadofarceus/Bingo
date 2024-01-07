@@ -44,7 +44,9 @@ function connectWebSocket() {
 
     socket.onclose = function () {
         console.log('WebSocket-Verbindung geschlossen. Versuche erneut zu verbinden...');
-        connectWebSocket(); // Verbindung nach 2 Sekunden erneut aufbauen
+        if (id === "LPRace2024") {
+            connectWebSocket(); // Verbindung nach 2 Sekunden erneut aufbauen
+        }
     };
 
     socket.onerror = function (error) {
