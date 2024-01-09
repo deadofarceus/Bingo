@@ -27,8 +27,6 @@ var url = new URL(window.location.href);
 var params = new URLSearchParams(url.search);
 const id = params.get('id');
 
-const text = document.getElementById('test');
-
 var socket;
 
 function connectWebSocket() {
@@ -62,9 +60,27 @@ function connectWebSocket() {
             return;
         }
         
-        const data = JSON.parse(message)
+        const data = JSON.parse(message);
+        const accounts = data.accounts;
 
-        text.innerHTML = JSON.stringify(data);
+        document.getElementById("V9Player").innerHTML = '';
+        document.getElementById("NNOPlayer").innerHTML = '';
+
+        var V9ELo = 0;
+        var NNOELo = 0;
+
+        accounts.forEach(player => {
+            if (player.name === "Sola" || player.name === "Kutcher") {
+                V9ELo += player.combinedLP
+                generatePlayer(player.name, player.tier, player.rank, player.leaguePoints, "V9");
+            } else {
+                NNOELo += player.combinedLP
+                generatePlayer(player.name, player.tier, player.rank, player.leaguePoints, "NNO");
+            }
+        });
+
+        setELO("V9", V9ELo);
+        setELO("NNO", NNOELo);
     };
 }
 
@@ -74,3 +90,44 @@ function ping() {
 
 // Initialer Verbindungsaufbau
 connectWebSocket();
+
+function setELO(team, LP) {
+    var eloP = document.getElementById(team + "ELO");
+    eloP.innerHTML = team + " " + LP + " LP";
+}
+
+const rPath = "../ressources/";
+
+function generatePlayer(playerName, eloSymbolSrc, rank, lpValue, team) {
+    var playerDiv = document.createElement('div');
+
+    var img1 = document.createElement('img');
+    img1.src = rPath + playerName + ".png";
+    img1.alt = '';
+
+    var pText = document.createElement('p');
+    pText.textContent = playerName;
+
+    var eloDiv = document.createElement('div');
+    eloDiv.className = 'ELO';
+
+    var eloImg = document.createElement('img');
+    eloImg.src = rPath + eloSymbolSrc + ".png";
+    eloImg.alt = '';
+
+    var lpP = document.createElement('p');
+    lpP.textContent = rank + " " + lpValue + ' LP';
+
+    eloDiv.appendChild(eloImg);
+    eloDiv.appendChild(lpP);
+
+    playerDiv.appendChild(img1);
+    playerDiv.appendChild(pText);
+    playerDiv.appendChild(eloDiv);
+
+    var parentplayerDiv = document.getElementById(team + "Player");
+    parentplayerDiv.appendChild(playerDiv);
+}
+
+// Beispielaufruf der Funktion mit Dummy-Werten
+// generatePlayer('SOLA', 'MASTER', 95, 'V9Player');
