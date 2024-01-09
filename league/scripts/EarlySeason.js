@@ -37,9 +37,9 @@ function connectWebSocket() {
 
     socket.onopen = function () {
         console.log('WebSocket-Verbindung hergestellt.');
-        if (id === "LPRace2024GET") {
+        // if (id === "LPRace2024GET") {
             socket.send("getLeagueData");
-        }
+        // }
     };
 
     socket.onclose = function () {
