@@ -1,4 +1,77 @@
 img {
-    height: 100px;
+    height: 50px;
+    width: 50px;
+    -webkit-filter: drop-shadow(3px 3px 3px #222);
+    filter: drop-shadow(3px 3px 3px #222);
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: azure;
+    margin: 0;
+    font-weight: bold;
+    font-family: 'Signika', sans-serif;
+    background-color: white;
+}
+
+#display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+}
+
+#V9,
+#NNO {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    flex-direction: column;
+}
+
+#VS {
+    font-size: 24px;
+    margin: 10px;
+}
+
+.TEAMELO {
+    font-size: 18px;
+    border-radius: 8px;
+    width: max-content;
+    padding: 2px;
+}
+
+#V9Player,
+#NNOPlayer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 5px;
+}
+
+#V9Player div,
+#NNOPlayer div {
     width: 100px;
+}
+
+.profileImg {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1.2);
+}
+
+.ELO {
+    margin-top: -9px;
+}
+
+p {
+    margin: 2px;
+    text-shadow: 0 3px 4px rgba(0, 0, 0, 1.8);
+}
+
+.profileImgDiv {
+    position: relative;
+    display: inline;
 }
