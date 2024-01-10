@@ -88,8 +88,10 @@ function connectWebSocket() {
 
         if (V9ELo > NNOELo) {
             betterTeam("V9");
+            worseTeam("NNO");
         } else if (V9ELo < NNOELo) {
             betterTeam("NNO");
+            worseTeam("V9");
         }
 
         coronation(besterSpieler.name);
@@ -119,6 +121,11 @@ function coronation(name) {
 function betterTeam(team) {
     const eloP = document.getElementById(team + "ELO");
     eloP.style.border = "2px solid rgba(0, 250, 0, 0.4)"
+}
+
+function worseTeam(team) {
+    const eloP = document.getElementById(team + "ELO");
+    eloP.style.border = "2px solid rgba(250, 0, 0, 0.2)"
 }
 
 function setELO(team, LP) {
