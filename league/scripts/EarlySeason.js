@@ -28,6 +28,8 @@ var params = new URLSearchParams(url.search);
 const id = params.get('id');
 
 var socket;
+const endTime = 1706137199000;
+var timerInterval;
 
 function connectWebSocket() {
     socket = new WebSocket(`wss://modserver-dedo.glitch.me?id=${id}`);
@@ -58,6 +60,11 @@ function connectWebSocket() {
 
         if (message === "pong") {
             return;
+        }
+
+        if (!timerInterval) {
+            updateTime();
+            timerInterval = setInterval(updateTime, 200);
         }
 
         const data = JSON.parse(message);
@@ -96,6 +103,26 @@ function connectWebSocket() {
 
         coronation(besterSpieler.name);
     };
+}
+
+function updateTime() {
+    if (endTime < Date.now()) {
+        // show winner
+        clearInterval(timerInterval);
+    }
+    // show time
+    const timeDifference = endTime - Date.now();
+    const totalSeconds = Math.floor(timeDifference / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const formattedTime = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
+    document.getElementById("timer").innerText = formattedTime;
+}
+
+function formatTime(time) {
+    return time < 10 ? `0${time}` : time;
 }
 
 function ping() {

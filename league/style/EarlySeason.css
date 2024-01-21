@@ -19,6 +19,7 @@ body {
     justify-content: center;
     align-items: center;
     margin: 30px;
+    margin-top: 0px;
 }
 
 #V9,
@@ -69,6 +70,18 @@ body {
 p {
     margin: 2px;
     text-shadow: 0 3px 4px rgba(0, 0, 0, 1.8);
+}
+
+#timer {
+    font-size: 20px;
+}
+
+#hihi {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .profileImgDiv {
