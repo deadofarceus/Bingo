@@ -64,7 +64,7 @@ function connectWebSocket() {
 
         if (!timerInterval) {
             updateTime();
-            timerInterval = setInterval(updateTime, 200);
+            timerInterval = setInterval(updateTime, 499);
         }
 
         const data = JSON.parse(message);
