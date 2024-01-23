@@ -88,3 +88,19 @@ p {
     position: relative;
     display: inline;
 }
+
+.winNNO {
+    transform: translate(-97.4px);
+    transition: 3s linear;
+}
+
+.winV9 {
+    transform: translate(97.4px);
+    transition: 3s linear;
+}
+
+.hide {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 2s, opacity 2s linear;
+}

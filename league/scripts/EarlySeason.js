@@ -30,12 +30,16 @@ const id = params.get('id');
 var socket;
 const endTime = 1706137199000;
 var timerInterval;
+var pingInterval;
+var better = "";
+var connectAgain = true;
+var savedAccounts;
 
 function connectWebSocket() {
     socket = new WebSocket(`wss://modserver-dedo.glitch.me?id=${id}`);
     // socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}&channel=${channel}`);
 
-    setInterval(ping, 60000);
+    pingInterval = setInterval(ping, 60000);
 
     socket.onopen = function () {
         console.log('WebSocket-Verbindung hergestellt.');
@@ -46,7 +50,8 @@ function connectWebSocket() {
 
     socket.onclose = function () {
         console.log('WebSocket-Verbindung geschlossen. Versuche erneut zu verbinden...');
-        if (id === "LPRace2024") {
+        if (id === "LPRace2024" && connectAgain) {
+            clearInterval(pingInterval);
             connectWebSocket(); // Verbindung nach 2 Sekunden erneut aufbauen
         }
     };
@@ -61,22 +66,22 @@ function connectWebSocket() {
         if (message === "pong") {
             return;
         }
-
-        if (!timerInterval) {
-            updateTime();
-            timerInterval = setInterval(updateTime, 499);
-        }
-
+        
         const data = JSON.parse(message);
         const accounts = data.accounts;
-
+        
+        if (savedAccounts && !eloDiffernce(accounts)) {
+            return;
+        }
+        savedAccounts = accounts;
+        
         document.getElementById("V9Player").innerHTML = '';
         document.getElementById("NNOPlayer").innerHTML = '';
-
+        
         var V9ELo = 0;
         var NNOELo = 0;
         var besterSpieler = undefined;
-
+        
         accounts.forEach(player => {
             if (!besterSpieler || besterSpieler.combinedLP < player.combinedLP) {
                 besterSpieler = player;
@@ -89,29 +94,43 @@ function connectWebSocket() {
                 generatePlayer(player.name, player.tier, player.rank, player.leaguePoints, "NNO");
             }
         });
-
+        
         setELO("V9", V9ELo);
         setELO("NNO", NNOELo);
-
+        
         if (V9ELo > NNOELo) {
             betterTeam("V9");
             worseTeam("NNO");
+            better = "V9";
         } else if (V9ELo < NNOELo) {
             betterTeam("NNO");
             worseTeam("V9");
+            better = "NNO";
         }
-
+        
         coronation(besterSpieler.name);
+
+        if (!timerInterval) {
+            updateTime();
+            timerInterval = setInterval(updateTime, 499);
+        }
     };
 }
 
 function updateTime() {
-    if (endTime < Date.now()) {
-        // show winner
-        clearInterval(timerInterval);
+    const timeDifference = endTime - Date.now();
+
+    if (timeDifference <= 0) {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        clearInterval(pingInterval);
+        socket.close();
+        connectAgain = false;
+        showWinner();
+        return;
     }
     // show time
-    const timeDifference = endTime - Date.now();
     const totalSeconds = Math.floor(timeDifference / 1000);
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -203,5 +222,30 @@ function generatePlayer(playerName, eloSymbolSrc, rank, lpValue, team) {
     parentplayerDiv.appendChild(playerDiv);
 }
 
+function showWinner() {
+    if (better === "NNO") {
+        document.getElementById('V9').classList.add('hide'); 
+        document.getElementById(better).classList.add('winNNO');
+    } else {
+        document.getElementById('NNO').classList.add('hide'); 
+        document.getElementById(better).classList.add('winV9');
+    }
+    document.getElementById('VS').classList.add('hide');
+
+    document.getElementById("timer").innerText = better + " GEWINNT!";
+}
+
+function eloDiffernce(accounts) {
+
+    for (let i = 0; i < accounts.length; i++) {
+        const newA = accounts[i];
+        const oldA = savedAccounts[i];
+        if (newA.combinedLP !== oldA.combinedLP) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Beispielaufruf der Funktion mit Dummy-Werten
-// generatePlayer('SOLA', 'MASTER', 95, 'V9Player');
+// generatePlayer('SOLA', 'CHALLENGER', 'I', 95, 'V9');
