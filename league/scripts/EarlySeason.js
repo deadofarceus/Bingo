@@ -28,12 +28,14 @@ var params = new URLSearchParams(url.search);
 const id = params.get('id');
 
 var socket;
-const endTime = 1706137199000;
+const endTime = 1706130884477;
 var timerInterval;
 var pingInterval;
 var better = "";
 var connectAgain = true;
 var savedAccounts;
+
+console.log(Date.now());
 
 function connectWebSocket() {
     socket = new WebSocket(`wss://modserver-dedo.glitch.me?id=${id}`);
@@ -64,6 +66,11 @@ function connectWebSocket() {
         const message = event.data;
 
         if (message === "pong") {
+            return;
+        }
+
+        if (message === "winner") {
+            showWinner();
             return;
         }
         
@@ -110,9 +117,11 @@ function connectWebSocket() {
         
         coronation(besterSpieler.name);
 
-        if (!timerInterval) {
+        if (!timerInterval && endTime - Date.now() > 0) {
             updateTime();
             timerInterval = setInterval(updateTime, 499);
+        } else if (endTime - Date.now() <= 0) {
+            document.getElementById("timer").innerText = "Zeit abgelaufen! Letztes Game l\u00E4uft noch!";
         }
     };
 }
@@ -124,10 +133,7 @@ function updateTime() {
         if (timerInterval) {
             clearInterval(timerInterval);
         }
-        clearInterval(pingInterval);
-        socket.close();
-        connectAgain = false;
-        showWinner();
+        document.getElementById("timer").innerText = "Zeit abgelaufen! Letztes Game l\u00E4uft noch!";
         return;
     }
     // show time
