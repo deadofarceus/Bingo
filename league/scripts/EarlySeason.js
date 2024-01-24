@@ -28,7 +28,7 @@ var params = new URLSearchParams(url.search);
 const id = params.get('id');
 
 var socket;
-const endTime = 1706130884477;
+const endTime = 1706137199000;
 var timerInterval;
 var pingInterval;
 var better = "";
