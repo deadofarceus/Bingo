@@ -1,0 +1,63 @@
+.eloimg {
+    height: 100px;
+    width: 100px;
+    margin-bottom: -18px;
+}
+
+img {
+    -webkit-filter: drop-shadow(3px 3px 3px #222);
+    filter: drop-shadow(3px 3px 3px #222);
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: azure;
+    margin: 0;
+    font-weight: bold;
+    font-family: 'Signika', sans-serif;
+    background-color: white;
+}
+
+#display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+    margin-top: 0px;
+}
+
+#V9Player{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 5px;
+}
+
+#V9Player div {
+    width: 80px;
+}
+
+.profileImg {
+    max-width: 100%;
+    margin: 5px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1.2);
+}
+
+.ELO {
+    margin-top: -9px;
+}
+
+p {
+    margin: 2px;
+    text-shadow: 0 3px 4px rgba(0, 0, 0, 1.8);
+    font-size: 32px;
+}
+
+#hihi {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

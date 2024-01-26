@@ -35,8 +35,6 @@ var better = "";
 var connectAgain = true;
 var savedAccounts;
 
-console.log(Date.now());
-
 function connectWebSocket() {
     socket = new WebSocket(`wss://modserver-dedo.glitch.me?id=${id}`);
     // socket = new WebSocket(`ws://localhost:8080?id=${id}&type=${type}&channel=${channel}`);
