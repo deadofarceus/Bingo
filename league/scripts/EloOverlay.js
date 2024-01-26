@@ -125,14 +125,18 @@ function generatePlayer(playerName, eloSymbolSrc, rank, lpValue, matches) {
 
     //create foreach match icon and arrow down red or green up `https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${championName}.png`
     var matchesDiv = document.createElement('div');
+    matchesDiv.classList.add("row");
     matches.reverse();
     matches.forEach((match, index) => {
+        var matchDiv = document.createElement('div');
         var champIMG = document.createElement('img');
-        champIMG.id = index + "img"
+        matchDiv.id = index + "img";
+        matchDiv.classList.add("imgdiv");
         champIMG.src = `https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${match.championName}.png`;
         champIMG.alt = '';
         champIMG.classList.add("profileImg");
-        matchesDiv.appendChild(champIMG);
+        matchDiv.appendChild(champIMG);
+        matchesDiv.appendChild(matchDiv);
     });
     
     playerDiv.appendChild(matchesDiv);
@@ -152,9 +156,9 @@ function addArrow(name, direction) {
     overlayImg.alt = 'Overlay Image';
     overlayImg.style.position = 'absolute';
     overlayImg.style.bottom = '0';
-    overlayImg.style.left = '0';
-    overlayImg.style.width = "100px"
-    overlayImg.style.height = "100px"
+    overlayImg.style.left = '4px';
+    overlayImg.style.width = "60px"
+    overlayImg.style.height = "60px"
     existingImg.appendChild(overlayImg);
 }
 

@@ -26,6 +26,18 @@ body {
     margin-top: 0px;
 }
 
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.imgdiv {
+    position: relative;
+    display: inline;
+}
+
 #V9Player{
     display: flex;
     justify-content: space-around;
