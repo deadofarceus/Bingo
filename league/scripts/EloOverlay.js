@@ -126,7 +126,6 @@ function generatePlayer(playerName, eloSymbolSrc, rank, lpValue, matches) {
     //create foreach match icon and arrow down red or green up `https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${championName}.png`
     var matchesDiv = document.createElement('div');
     matchesDiv.classList.add("row");
-    matches.reverse();
     matches.forEach((match, index) => {
         var matchDiv = document.createElement('div');
         var champIMG = document.createElement('img');
@@ -154,11 +153,7 @@ function addArrow(name, direction) {
     var overlayImg = document.createElement('img');
     overlayImg.src = rPath + direction + ".png";
     overlayImg.alt = 'Overlay Image';
-    overlayImg.style.position = 'absolute';
-    overlayImg.style.bottom = '0';
-    overlayImg.style.left = '4px';
-    overlayImg.style.width = "60px"
-    overlayImg.style.height = "60px"
+    overlayImg.classList.add("overlayIMG");
     existingImg.appendChild(overlayImg);
 }
 
