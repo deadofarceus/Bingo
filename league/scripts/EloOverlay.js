@@ -48,17 +48,17 @@ var timerInterval;
 var pingInterval;
 var better = "";
 var connectAgain = true;
-var savedAccount = new Account("", summonerName , tag);
+var savedAccount = new Account("", summonerName, tag);
 
 function connectWebSocket() {
-    socket = new WebSocket(`wss://modserver-dedo.glitch.me`);
-    // socket = new WebSocket(`ws://localhost:8080`);
+    socket = new WebSocket(`wss://modserver-dedo.glitch.me?name=${summonerName}&tag=${tag}`);
+    // socket = new WebSocket(`ws://localhost:8080?name=${summonerName}&tag=${tag}`);
 
     pingInterval = setInterval(ping, 60000);
 
     socket.onopen = function () {
         console.log('WebSocket-Verbindung hergestellt.');
-        const modEvent = new ModEvent("league/listenAccount", {summonerName: summonerName, tag: tag, key: key});
+        const modEvent = new ModEvent("league/listenAccount", { summonerName: summonerName, tag: tag, key: key });
         socket.send(JSON.stringify(modEvent));
     };
 
@@ -74,11 +74,11 @@ function connectWebSocket() {
 
     socket.onmessage = function (event) {
         const message = event.data;
-        
+
         if (message === "pong") {
             return;
         }
-        
+
         const data = JSON.parse(message);
         const account = data.accounts[0];
         console.log(account);
@@ -137,12 +137,12 @@ function generatePlayer(playerName, eloSymbolSrc, rank, lpValue, matches) {
         matchDiv.appendChild(champIMG);
         matchesDiv.appendChild(matchDiv);
     });
-    
+
     playerDiv.appendChild(matchesDiv);
-    
+
     var parentplayerDiv = document.getElementById("Player");
     parentplayerDiv.appendChild(playerDiv);
-    
+
     matches.forEach((match, index) => {
         addArrow(index, match.win);
     });
