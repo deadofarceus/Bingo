@@ -134,6 +134,7 @@ function generatePlayer(playerName, eloSymbolSrc, rank, lpValue, matches) {
         champIMG.src = `https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${match.championName}.png`;
         champIMG.alt = '';
         champIMG.classList.add("profileImg");
+        champIMG.style.height = `${40-(matches.length-1-index)}px`;
         matchDiv.appendChild(champIMG);
         matchesDiv.appendChild(matchDiv);
     });
@@ -144,16 +145,17 @@ function generatePlayer(playerName, eloSymbolSrc, rank, lpValue, matches) {
     parentplayerDiv.appendChild(playerDiv);
 
     matches.forEach((match, index) => {
-        addArrow(index, match.win);
+        addArrow(index, match.win, matches.length-1-index);
     });
 }
 
-function addArrow(name, direction) {
+function addArrow(name, direction, length) {
     var existingImg = document.getElementById(name + "img");
     var overlayImg = document.createElement('img');
     overlayImg.src = rPath + direction + ".png";
     overlayImg.alt = 'Overlay Image';
     overlayImg.classList.add("overlayIMG");
+    overlayImg.style.height = `${40-(length)}px`;
     existingImg.appendChild(overlayImg);
 }
 

@@ -53,7 +53,6 @@ body {
 
 .profileImg {
     max-width: 100%;
-    height: 35px;
     border-radius: 50%;
     clip-path: circle(46% at 50% 50%);
 }
@@ -76,10 +75,16 @@ p {
     flex-direction: column;
 }
 
+#playerInfo {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
 .overlayIMG {
     position: absolute;
     top: 0;
     right: 0;
-    width: 35px;
-    height: 35px;
 }
