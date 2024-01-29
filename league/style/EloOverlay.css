@@ -33,11 +33,12 @@ body {
 }
 
 .imgdiv {
-    position: relative;
-    display: inline;
+    display: flex;
     width: 40px;
     height: 40px;
     filter: drop-shadow(3px 3px 3px #222);
+    justify-content: center;
+    align-items: center;
 }
 
 #V9Player {

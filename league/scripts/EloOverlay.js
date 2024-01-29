@@ -178,7 +178,7 @@ function generatePlayer(
     champIMG.src = `https://ddragon.leagueoflegends.com/cdn/14.2.1/img/champion/${match.championName}.png`;
     champIMG.alt = "";
     champIMG.classList.add("profileImg");
-    champIMG.style.height = `${40 - (matches.length - 1 - index)}px`;
+    champIMG.style.height = `${40 - (matches.length - 1 - index) * 2}px`;
     matchDiv.appendChild(champIMG);
     matchesDiv.appendChild(matchDiv);
   });
@@ -199,7 +199,7 @@ function addArrow(name, direction, length) {
   overlayImg.src = rPath + direction + ".png";
   overlayImg.alt = "Overlay Image";
   overlayImg.classList.add("overlayIMG");
-  overlayImg.style.height = `${40 - length}px`;
+  overlayImg.style.height = `${40 - length * 2}px`;
   existingImg.appendChild(overlayImg);
 }
 
