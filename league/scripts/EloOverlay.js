@@ -146,10 +146,10 @@ function generatePlayer(
   lpDiffP.classList.add("lpDiff");
   if (lpDiff >= 0) {
     lpDiffP.innerHTML = `+${lpDiff} LP &uarr;`;
-    lpDiffP.style.color = "rgb(33, 209, 6)";
+    lpDiffP.style.color = "#6eff57";
   } else {
     lpDiffP.innerHTML = `${lpDiff} LP &darr;`;
-    lpDiffP.style.color = "rgb(255, 28, 24)";
+    lpDiffP.style.color = "#FF6565";
   }
 
   var today = document.createElement("p");
