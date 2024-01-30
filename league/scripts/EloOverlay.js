@@ -200,6 +200,7 @@ function addArrow(name, direction, length) {
   overlayImg.alt = "Overlay Image";
   overlayImg.classList.add("overlayIMG");
   overlayImg.style.height = `${40 - length * 2}px`;
+  overlayImg.style.right = `${length}px`;
   existingImg.appendChild(overlayImg);
 }
 
